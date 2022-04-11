@@ -1,0 +1,37 @@
+
+{% if graph_selected != "Heat Map" %}
+<div class="">
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Select X Column</label>
+      <select class="form-control" name="xcolumn">
+          {% for col in x_list %}
+            <option value="{{col}}" {% if x_column=="{col}}" %} selected="selected"{% endif %}>{{col}}</option>
+          {% endfor %}
+        </select>
+    </div>
+
+    {% if y_list|length > 0 %}
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Select Y Column</label>
+      <select class="form-control" name="ycolumn">
+          {% for col in y_list %}
+            <option value="{{col}}" {% if y_column=="{{col}}" %} selected="selected"{% endif %}>{{col}}</option>
+          {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if graph_selected == "Heat Map" %}
+<div class="">
+
+</div>
+{% endif %}
+
+
+<script>
+  $(document).ready(function() {
+      $('.js-example-basic-multiple').select2();
+  });
+</script>

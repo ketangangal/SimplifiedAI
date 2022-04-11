@@ -1,0 +1,21 @@
+#!/bin/bash
+
+PYTHON_PROCESS_COUNT=`ps -ef | grep 'app.py\|supervisord' | grep -v grep | awk {'print $2'} | wc -l`
+
+if [[ $PYTHON_PROCESS_COUNT -gt 0 ]]; then
+    echo "Python process are running. So killing them"
+    for i in `ps -ef | grep 'app.py\|supervisord' | grep -v grep | awk {'print $2'}`
+    do
+    sudo kill -9 $i
+    sleep 10
+    done
+else
+    echo "No Python Process Is running"
+fi
+echo "Stopped"
+
+cd /home/ec2-user/Projectathon
+source environment/bin/activate
+sudo mkdir -p /home/ec2-user/Projectathon/.project-root
+/usr/local/bin/supervisord -c /home/ec2-user/Projectathon/supervisord.conf
+

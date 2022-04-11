@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <div class="home delete-div">
+        {% if status=="success" %}
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Congrats!</strong> Target Column Updated Successfully.
+          </div>
+        {% endif %}
+        {% if status=="error" %}
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Error!</strong> Coudn't SetTarget Column.
+          </div>
+        {% endif %}
+        <div class="jumbotron">
+          <h1>Select Target Column</h1>
+          <p>Project will be permanently deleted from the database and you could not recover.</p>
+          <form action="target-column" method="post">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                  <div class="form-group">
+                      <label for="exampleFormControlSelect1">Select Target Columns</label>
+                      <select class="form-control" name="column">
+                          {% for col in columns %}
+                          <option value="{{col}}">{{col}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" style="margin-left: -14px">
+                <button type="button" class="btn btn-warning margin-top-10" data-toggle="modal" data-target="#exampleModal">Set Target Column</button>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Are you sure??</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please make sure you selected right target column</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-danger">Set Target Column</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </form>
+        </div>
+      </div>
+</div>
+{% endblock %}

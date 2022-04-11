@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="/signup" method="post" class="form1 login-form">
+  <div class="container">
+    {% if msg %}
+    <div class="col-lg-12 col-sm-12 col-md-12">
+      <div class="alert alert-danger">
+        <strong>Alert!  </strong>{{msg}}.
+      </div>
+    </div>
+    {% endif %}
+    <h3 class="header">Register</h3>
+      <label for="email"><b>UserName:</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="email"><b>Email:</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="password"><b>Password:</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+      <label for="confirm-password"><b>Confirm Password:</b></label>
+    <input type="password" placeholder="Reenter Password" name="confirm-password" required>
+    <button type="submit">Create Account</button>
+      <h6>Already a user? </h6>
+      <a href="/login">
+          <button type="button" class="cancelbtn">Login</button>
+      </a>
+  </div>
+  </div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form id="project_form" class="project-form" enctype = "multipart/form-data">
+
+    <div class="container col-lg-6 col-sm-6">
+      {% if msg %}
+      <div class="col-lg-12 col-sm-12 col-md-12">
+        <div class="alert alert-danger">
+          <strong>Alert!  </strong>{{msg}}.
+        </div>
+      </div>
+      {% endif %}
+
+      <h3 class="header">Add Prediction File</h3>
+      <!-- Upload File -->
+      <label for="uploadFile" class="label1"><b>Upload Your File:</b></label>
+      <input type="file" id="file" name="file">
+      <p>allowed file *.csv, .tsv, .json</p>
+    </div>
+  </form>
+
+
+

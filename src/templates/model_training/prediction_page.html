@@ -1,0 +1,45 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="jumbotron text-center" style="margin-top: 60px;">
+  <h1>Make Predictions</h1>
+  <p>Now your model is trained so you can make predictions now, but please make sure that uploaded file is in same format</p>
+  <div class="predict-div">
+    <h3>Instructions:</h3>
+    <ul>
+      <li>Make sure prediction file structure is same as training data</li>
+      <li>Columns name should be same and order should be same</li>
+    </ul>
+  </div>
+</div>
+{% if status=="error" %}
+<div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{msg}}
+  </div>
+{% endif %}
+    <form id="project_form" class="project-form2"  enctype = "multipart/form-data" action="/prediction" method="post">
+
+      <div class="table2">
+    <h3 class="header">Add Prediction File</h3>
+    <input type="file" id="file" name="file">
+    <p class="pclass">allowed file *.csv, .tsv, .json</p>
+
+     <div class="col-4" style="padding-top: 20px;">
+      <button type="submit" id="submit" class="btn btn-warning">Make Prediction</button>
+  </div>
+
+  </div>
+
+</form>
+    </div>
+</div>
+
+<script>
+  $(document).ready(()=>{
+    $("#submit").on('click',()=>{
+      $("#loading").css('display', 'block');
+    })
+  })
+</script>
+
+{% endblock %}

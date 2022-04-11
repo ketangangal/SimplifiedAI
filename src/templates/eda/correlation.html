@@ -1,0 +1,78 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1 class="myclass">{{method}} Correlation</h1>
+        <p>{% if method=="pearson" %}The Pearson's correlation coefficient (r) is a measure of 
+            linear correlation between two variables. It's value lies between
+            -1 and +1, -1 indicating total negative linear correlation, 0 indicating 
+             no linear correlation and 1 indicating total positive linear correlation.
+             Furthermore, r is invariant under separate changes in location and scale 
+             of the two variables, implying that for a linear function the angle to the
+             x-axis does not affect r.To calculate r for two variables X and Y, one divides
+             the covariance of X and Y by the product of their standard deviations.{% endif %}</p> 
+        <p>{% if method=="spearman" %}The Spearman's rank correlation coefficient (ρ) 
+            is a measure of monotonic correlation between two variables, 
+            and is therefore better in catching nonlinear monotonic correlations 
+            than Pearson's r. It's value lies between -1 and +1, -1 indicating 
+            total negative monotonic correlation, 0 indicating no monotonic 
+            correlation and 1 indicating total positive monotonic correlation.
+            To calculate ρ for two variables X and Y, one divides the covariance
+            of the rank variables of X and Y by the product of their standard deviations.{% endif %}</p> 
+        <p>{% if method=="kendall" %} Similarly to Spearman's rank correlation coefficient,
+            the Kendall rank correlation coefficient (τ) measures ordinal
+            association between two variables. It's value lies between
+            -1 and +1, -1 indicating total negative correlation,
+            0 indicating no correlation and 1 indicating total
+            positive correlation.To calculate τ for two variables
+            X and Y, one determines the number of concordant and
+            discordant pairs of observations. τ is given by the
+            number of concordant pairs minus the discordant pairs
+            divided by the total number of pairs{% endif %}</p> 
+      </div>
+      <form class="correlation-form" action="/eda/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Correaltion Method</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="method">
+                      <option value="pearson" {% if method=="pearson" %} selected="selected"{% endif %}>Pearson</option>
+                      <option value="spearman" {% if method=="spearman" %} selected="selected"{% endif %}>Spearman</option>
+                      <option value="kendall" {% if method=="kendall" %} selected="selected"{% endif %}>Kendell</option>
+                    </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Columns</label>
+                    <select class="js-example-basic-multiple form-control" name="columns" multiple="multiple">
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button id="submit" type="submit" class="btn btn-success margin-top-10">Show Result</button>
+            </div>
+        </div>
+      </form>
+      <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+</div>
+<script type='text/javascript'>
+ var graphs = {{data | safe}};
+Plotly.newPlot('myDiv',  graphs);
+</script>
+<script>
+   $(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+    $(document).ready(()=>{
+        $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+            })
+        $(".dataframe").attr("class","table table-hover")
+    })
+</script>
+{% endblock %}

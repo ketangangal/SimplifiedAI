@@ -1,0 +1,39 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if status=="success" %}
+    <div class="alert alert-success">
+        <strong>Congratss!</strong> Your Prediction is done
+      </div>
+    {% endif %}
+    {% if status=="error" %}
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong> {{msg}}
+      </div>
+    {% endif %}
+   <form action="/download_prediction" method="post">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+            <button type="submit" id="button_download" class="btn btn-warning show-loader">Donwload Prediction Result</button>
+        </div>
+   </form>
+
+    </div>
+    <div style="overflow:auto;">
+        {{data | safe}}
+      </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable({
+    });
+    jQuery('.dataTable').wrap('<div class="dataTables_scroll" />');
+    $("#button_download").on('click',()=>{
+        // $("#loading").css('display', 'block');
+    })
+} );
+</script>
+{% endblock %}

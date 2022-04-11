@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="home delete-div">
+  <div class="jumbotron">
+    <h1>Do you want to delete the Project?</h1>
+    <p>Project will be permanently deleted from the database and you could not recover.
+      <b>Please make sure that you exported your data and models.</b></p>
+    <div class="float-left">
+      <a href="/deleteProject/{{data.id}}"><button type="button" class="btn btn-success add-button">Delete</button></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="table2">
+    {% if success %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Data Updated Successfully.
+      </div>
+    {% endif %}
+    {% if error %}
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong> {{error}}
+      </div>
+    {% endif %}
+<div class="jumbotron text-center">
+    <h1>Handle Imbalance Dataset</h1>
+    <p class="myclass"><b>What is imbalnce dataset?</b>Imbalanced data typically refers to a classification
+         problem where the number of observations per class is not equally distributed; 
+         often you'll have a large amount of data/observations for one class (referred to as the majority class),
+          and much fewer observations for one or more other classes</p>
+  </div>
+  {% if target_column %}
+  <h3 style="margin-top: 30px;">Class Distribution</h3>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-21 col-sm-12">
+     <div id='barChart'></div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-21 col-sm-12">
+        <div id='pieDiv'></div>
+    </div>
+    </div>
+    <form class="imbalance-form" action="/dp/{{action}}" method="post">
+        <input type="hidden" value="{{perform_action}}" id="perform_action" name="perform_action" />
+        <input type="hidden" value="{{target_column}}" id="target_column" name="target_column" />
+        <div class="row">
+           <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Mehtod For Handle Imbalance Data</label>
+                <select class="form-control" name="method" id="method">
+                    <option value="OS">Over Sampling</option>
+                    <option value="US">Under Sampling</option>
+                    <option value="SMOTE">Synthetic Minority Over-sampling Technique</option>
+                  </select>
+              </div>
+           </div>
+        </div>
+        <div class="under">
+          <div class="alert alert-success">
+            <strong>Note!</strong> For Over Sampling, For Each Class label 
+            Add No Of Record Samller Than Current No Of Records.
+          </div>
+        </div>
+        <div class="over">
+          <div class="alert alert-success">
+            <strong>Note!</strong> For Over Sampling, For Each Class label 
+            Add No Of Record Greater Than Current No Of Records.
+          </div>
+        </div>
+          {% for key in data %}
+          <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label>No Of Records For Class Name &nbsp;&nbsp;{{key}}</label>
+                  <input type="number" min="0" value={{data[key]}} id="{{key}}" name="{{key}}" class="form-control"/>
+              </div>
+            </div>
+        </div>
+          {% endfor %}
+        <div class="row">
+            <div class=" col-lg-4 col-md-4 col-sm-12 col-sm-12">
+                <button type="button" class="btn btn-default" id="delete-btn" data-toggle="modal" data-target="#exampleModal">Submit Result</button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Are you sure??</h5>
+                </div>
+                <div class="modal-body">
+                    <p style="color: black;">
+                        <b style="color: #dc3545;font-weight: 700;" id="selected_method">Please verify your selected method and ration value </b>
+                    </p>
+                    <p style="color: black;">
+                        <b style="color: #299e44;font-weight: 700;" id="selected_ratio">It can't be revert back</b>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-danger" id="submit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </form>
+  {%endif%}
+</div>
+<script type='text/javascript'>
+    var graphs = {{graphJSON | safe}};
+Plotly.newPlot('pieDiv',  graphs);
+
+$("#submit").on('click',()=>{
+  $("#loading").css('display', 'block');
+})
+
+var pie_graphJSON = {{pie_graphJSON | safe}};
+Plotly.newPlot('barChart',  pie_graphJSON);
+
+var slider = document.getElementById("range");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+</script>
+<script>
+  $(document).ready(()=>{
+    $(".under").hide()
+
+    $("#method").on('change',()=>{
+        if($("#method").val()=="US"){
+          $(".under").show()
+          $(".over").hide()
+        }else{
+          $(".under").hide()
+          $(".over").show()
+        }
+    })
+  })
+</script>
+
+{% endblock %}
+

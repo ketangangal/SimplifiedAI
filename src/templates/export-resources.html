@@ -1,0 +1,34 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="jumbotron text-center" style="margin-top: 60px;">
+  <h1>Export Resources</h1>
+  <p>Export all your resources like Cncoder, Scaler, PCA, Model and other artifacts, so you can use later</p>
+</div>
+{% if status=="error" %}
+<div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{msg}}
+  </div>
+{% endif %}
+{% if status=="success" %}
+    <form action="/export-resources/{{pid}}" method="post">
+
+     <div class="col-4" style="padding-top: 20px;">
+      <button type="submit" id="submit" class="btn btn-warning">Export Project Resources</button>
+  </div>
+
+  </div>
+
+</form>
+{% endif %}
+
+<script>
+ $(document).ready(function() {
+
+// $("#submit").on('click',()=>{
+//         $("#loading").css('display', 'block');
+// })
+    })
+</script>
+
+{% endblock %}

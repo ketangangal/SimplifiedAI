@@ -1,0 +1,29 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Data Summary</h1>
+        <p>A summary consists of five values: the most extreme values
+            in the data set (the maximum and minimum values), the lower and upper quartiles, and the median.
+            These values are presented together and ordered from lowest to highest: minimum value,
+            lower quartile (Q1), median value (Q2), upper quartile (Q3), maximum value.</p>
+            <p>Below Find info about column datatype AND missing values</p> 
+      </div>
+      <div class="alert alert-success">
+        <strong>Total Records: &nbsp;&nbsp;</strong> {{count}}
+        &nbsp;&nbsp;<strong>Total Columns: &nbsp;&nbsp;</strong> {{column_count}}
+      </div>
+    {{data | safe}}
+
+    <div class="alert alert-info div_dtype">
+        <strong>Dataset Column Info!</strong> Check column types and count of null values.
+      </div>
+    {{dtypes | safe}}
+</div>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable();
+} );
+</script>
+{% endblock %}

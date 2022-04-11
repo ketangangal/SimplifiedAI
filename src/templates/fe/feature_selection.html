@@ -1,0 +1,196 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Feature Selection</h1>
+        <p>Top reasons to use feature selection are: It enables the machine learning algorithm to train faster.
+             It reduces the complexity of a model and makes it easier to interpret. It improves the accuracy of
+              a model if the right subset is chosen.</p>
+              <b>Using Feature Selection method You Can Get Idea, Which features should you keep</b>
+    </div>
+
+    {% if status=="error" %}
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong> {{msg}}
+      </div>
+    {% endif %}
+
+    {% if status=="success" %}
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Congrats!</strong> Auto Model Performed, Please Find List of all trained models. And Select best on for your data.
+      </div>
+    {% endif %}
+
+    {% if status!="error" %}
+    <form>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Feature Selection Method</label>
+                    <select class="js-example-basic-multiple form-control" name="method" id="method">
+                        {% for col in methods %}
+                        <option value="{{col}}">{{col}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="col_variance">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Variance Threshold</label>
+                    <select class="js-example-basic-multiple form-control" name="threshold" id="threshold">
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="col_no_features">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Number of features To Select</label>
+                   <input type="number" class="form-control" min="1" max="{{columns_len}}" value="1" id="n_features_to_select" name="n_features_to_select"/>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button type="button" id="check_result" class="btn btn-warning">Check Result</button>
+            </div>
+        </div>
+        <div id="variance" class="margin-top-20">
+            <h4>Result</h4>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
+                    <div class="form-group">
+                        <div class="alert alert-success" id="selected">
+                            <strong>High varaince Data</strong> No Need To Handle.
+                        </div>
+                        <div class="list-group" id="high">
+                            
+                          </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-sm-12">
+                    <div class="form-group">
+                        <div class="alert alert-danger"  id="not_selected">
+                            <strong>Low varaince Data</strong> Need To handle
+                        </div>
+                        <div class="list-group" id="low">
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="grph_div" class="margin-top-20">
+            <h4>Result</h4>
+            <div id='myDiv'></div>
+        </div>
+    </form>
+    
+    {% endif %}
+</div>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable();
+    $("#variance").hide()
+    $("#grph_div").hide()
+    $("#col_no_features").hide()
+    $("#method").on('change',()=>{
+        if($("#method").val()=="Find Constant Features"){
+            // data['threshold']=$("#threshold").val()
+            $("#col_variance").show()
+        }else{
+            $("#variance").hide()
+            $("#col_variance").hide()
+        }
+
+        if($("#method").val()=="Backward Elimination" || $("#method").val()=="Forward Selection"){
+            $("#col_no_features").show()
+        }else{
+            $("#col_no_features").hide()
+        }
+    })
+    $("#check_result").on('click',()=>{
+        var data={
+            "method":$("#method").val()
+        }
+
+        if($("#method").val()=="Find Constant Features"){
+            data['threshold']=$("#threshold").val()
+        }
+
+        if($("#method").val()=="Backward Elimination" || $("#method").val()=="Forward Selection"){
+            data['n_features_to_select']=$("#n_features_to_select").val()
+        }
+        $("#loading").css('display', 'block');
+        $.ajax({
+                type: "POST",
+                url: `${window.location.origin}/api/feature_selection`,
+                dataType:'json',
+                data:JSON.stringify(data),
+                contentType:'application/json',
+                cache: false
+        }).done(function(data) {
+            $("#loading").css('display', 'none');
+           if(data.success){
+            if($("#method").val()=="Find Constant Features"){
+                $("#variance").show()
+                $("#high").empty()
+                $("#low").empty()
+                data.high_variance_columns.forEach(element => {
+                    $("#high").append(`<li class="list-group-item">${element}</li>`)
+                });
+
+                data.low_variance_columns.forEach(element => {
+                    $("#low").append(`<li class="list-group-item">${element}</li>`)
+                });
+            }
+            else if($("#method").val()=="Backward Elimination" || $("#method").val()=="Forward Selection"){
+                $("#variance").show()
+                $("#high").empty()
+                $("#low").empty()
+                $("#grph_div").hide()
+                $("#selected").empty()
+                $("#selected").append('<strong>Selected Columns</strong>')
+
+                $("#not_selected").empty()
+                $("#not_selected").append('<strong>Columns Not Selected</strong>')
+                data.selected_columns.forEach(element => {
+                    $("#high").append(`<li class="list-group-item">${element}</li>`)
+                });
+
+                data.not_selected_columns.forEach(element => {
+                    $("#low").append(`<li class="list-group-item">${element}</li>`)
+                });
+            }
+            else{
+            $("#grph_div").show()
+             var graph  = data?.graph
+             Plotly.newPlot('myDiv',  JSON.parse(graph));
+            }
+           }else{
+               alert(data.msg)
+           }
+     
+        })
+        .fail(function(err) {
+            // do stuff here
+            alert(err)
+            $("#loading").css('display', 'none');
+        })
+        .always(function(info) {
+            // do stuff here
+        });
+    })
+} );
+</script>
+{% endblock %}

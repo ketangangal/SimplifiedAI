@@ -1,0 +1,218 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="table2">
+    {% if success %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Missing Values Handled Successfully.
+      </div>
+    {% endif %}
+<div class="jumbotron text-center">
+    <h1>Missing Values Report</h1>
+    <p>This class returns table of dataset and this table shows
+        missing values,percentage of missing values, mean, median,
+        mode with respective to each column available in dataset.
+        and also graphical presentation of missing values.</p> 
+  </div>
+  <form action="/dp/{{action}}" method="post">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Columns To Missing Values</label>
+                <select class="form-control" name="columns" id="columns">
+                    {% if not selected_column %}
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="{{selected_column}}">{{selected_column}}</option>
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12 margin-23">
+            <button type="submit" class="btn btn-default" id="delete-btn">Submit</button>
+        </div>
+        </div>    
+  </form>
+  </div>
+  {% if null_value_count==0 %}
+      <div class="alert alert-success">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Great!</strong> No Missing Value Exist.
+        </div>
+      {% endif %}
+      {{data | safe}}
+ {% if selected_column and null_value_count%}
+      <form action="/dp/{{action}}" method="post" class="margin-23">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Method To Handle Outlier</label>
+                    <select class="form-control" name="method" id="method">
+                        {% for col in handler_methods %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="arbitrary_div">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Insert Arbitrary Value</label>
+                    <input type="number" id="arbitrary" name="arbitrary"  class="form-control" />
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="newcategory_div">
+                <div class="form-group">
+                    <label for="newcategory">Name For New Category</label>
+                    <input type="text" id="newcategory" name="newcategory"  class="form-control margion0" />
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="interpolate_div">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Interpolate Method</label>
+                    <select class="form-control" name="interpolate" id="interpolate">
+                        <option value="nearest">Nearest</option>
+                        <option value="zero">Zero</option>
+                        <option value="slinear">Slinear</option>
+                        <option value="quadratic">Quadratic</option>
+                        <option value="cubic">Cubic</option>
+                        <option value="spline">Spline</option>
+                        <option value="barycentric">Barycentric</option>
+                        <option value="polynomial">Polynomial</option>
+                    </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="selectcategory_div">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Category</label>
+                    <select class="form-control" name="selectcategory" id="selectcategory">
+                        {% for col in unique_category %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12 margin-23">
+                <button type="button" class="btn btn-warning" id="check_result">Check Result</button>
+            </div>
+            <input type="hidden" value="{{selected_column}}" name="selected_column" id="selected_column"/>
+            </div>    
+            <div id="show-result" class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+                    <div class="form-group">
+                        <h4>Distribution Before Imputation</h4>
+                        <h5 id="before_kurtosis" class="kurtosis"></h5>
+                        <h5 id="before_skewness" class="skewness"></h5>
+                        <div id='before'></div>
+                      </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+                    <div class="form-group">
+                        <h4>Distribution After Imputation</h4>
+                        <h5 id="after_kurtosis" class="kurtosis"></h5>
+                        <h5 id="after_skewness" class="skewness"></h5>
+                        <div id='after'></div>
+                      </div>
+                </div>
+             </div>
+            <div class="row" id="submit">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="submit" class="btn btn-danger" id="check_result">Apply Selected Method</button>
+                </div>
+            </div>
+      </form>
+{% endif %}
+      <script  type='text/javascript'>
+        $(document).ready(function() {
+
+            $("#arbitrary_div").hide()
+            $("#interpolate_div").hide()
+            $("#newcategory_div").hide()
+            $("#selectcategory_div").hide()
+            $("#submit").hide()
+            $("#method").on('change',function(e){
+                $("#submit").hide()
+                if(e.target.value=='Arbitrary Value'){
+                    $("#arbitrary_div").show()
+                }else{
+                    $("#arbitrary_div").hide()
+                }
+
+                if(e.target.value=='Interpolate'){
+                    $("#interpolate_div").show()
+                }else{
+                    $("#interpolate_div").hide()
+                }
+
+                if(e.target.value=='New Category'){
+                    $("#newcategory_div").show()
+                }else{
+                    $("#newcategory_div").hide()
+                }
+
+                if(e.target.value=='Select Exist'){
+                    $("#selectcategory_div").show()
+                }else{
+                    $("#selectcategory_div").hide()
+                }
+
+            })
+            $("#show-result").hide()
+            $('.dataframe').DataTable();
+            $("#check_result").click(()=>{
+            var data={
+                'selected_column':$("#selected_column").val(),
+                'method':$("#method").val()
+            }
+
+            if($("#arbitrary_div").is(':visible')){
+                data['Arbitrary_Value']=parseFloat($("#arbitrary").val())
+            }
+            else if($("#interpolate").is(':visible')){
+                data['Interpolate']=$("#interpolate").val()
+            }
+            else if($("#newcategory_div").is(':visible')){
+                data['newcategory']=$("#newcategory").val()
+            }
+            else if($("#selectcategory_div").is(':visible')){
+                data['selectcategory']=$("#selectcategory").val()
+            }
+            $("#loading").css('display', 'block');
+            $.ajax({
+                type: "POST",
+                url: `${window.location.origin}/api/missing-data`,
+                data: JSON.stringify(data),
+                dataType:'json',
+                contentType:'application/json',
+                cache: false
+        }).done(function(data) {
+            $("#loading").css('display', 'none');
+            $("#submit").show()
+            $("#show-result").show()
+            var earlier_graph = data?.before?.graph
+            Plotly.newPlot('before',  JSON.parse(earlier_graph));
+            if(data?.before?.kurtosis){
+                $("#before_kurtosis").text(`Kurtosis ${parseFloat(data?.before?.kurtosis).toFixed(2)}`)
+                $("#before_skewness").text(`Skewness ${parseFloat(data?.before?.skewness).toFixed(2)}`)
+                $("#after_kurtosis").text(`Kurtosis ${parseFloat(data?.after?.kurtosis).toFixed(2)}`)
+                $("#after_skewness").text(`Skewness ${parseFloat(data?.after?.skewness).toFixed(2)}`)
+            }
+
+            var after_graph  = data?.after?.graph
+            Plotly.newPlot('after',  JSON.parse(after_graph));
+     
+        })
+        .fail(function(err) {
+            $("#loading").css('display', 'none');
+        })
+        .always(function(info) {
+            // do stuff here
+        });
+    } );
+})
+    </script>
+{% endblock %}

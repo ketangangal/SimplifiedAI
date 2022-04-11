@@ -1,0 +1,1153 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url(/static/css/machine-learning-1.png);
+  background-position: center;
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+}
+
+.form1 {margin-top:20px}
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 20px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+
+.login-form{
+  background-image: url("/static/css/machine-learning-1.png");
+  border-radius: 10px;
+  background: #17a2b8;
+  width: 38%;
+  padding-top: 22px;
+  margin-left: 31%;
+  margin-top: 4%;
+  color: #fff;
+}
+
+.project-form{
+    border-radius: 10px;
+    background: #17a2b8;
+    width: 60%;
+    margin-left: 20%;
+    color:#fff;
+    margin-top:30px;
+    
+}
+
+.project-form2{
+  padding-right: 20%;
+    padding-left: 20%;
+    border-radius: 10px;
+    background: #17a2b8;
+    color:#fff;
+    margin-top:30px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.project-form-dataframe{
+  border-radius: 10px;
+  background: #fff;
+  width: 90%;
+  margin-left: 5%;
+  margin-top:30px;
+  padding: 0px 30px;
+}
+
+.header{
+font-weight: 700;
+    margin-bottom: 30px;
+ }
+
+ .home{
+  margin-top:20px;
+  padding-left:40px !important;
+  padding-right:40px;
+ }
+
+ .add-button{
+    margin-left: 84%;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    width: 165px;}
+
+
+#file{
+    margin-bottom: 10px;
+}
+.label1{
+margin-top:20px}
+
+.back{
+width:60px
+}
+
+#loader{
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    padding-top: 108px;
+    padding-left: 45%;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #F44336;
+  border-bottom: 16px solid #F44336;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.delete-div{
+    width: 60%;
+    margin-left: 20%;
+}
+    .float-left{
+    margin-top:20px !important;
+    }
+.nav-bar-custom{
+  justify-content: space-between;
+}
+.logout
+    {
+      color: #fff !important;
+      font-weight: 700;
+    }
+  .logout-form{
+    margin-top: 0px;
+    padding-top: 0px;
+  }
+
+  .project-desc{
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* line-height: 16px; */
+    /* max-height: 32px; */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  div[data-testid="stToolbar"] {
+   display: none;
+  }
+  .table2{
+    margin-top: 4rem;
+  }
+  .correlation-form{
+    margin-top: 0px !important;
+  }
+  .margin-top-10{
+    margin-top: 30px !important;
+  }
+  .mt-100 {
+    margin-top: 100px
+}
+.jumbtron{
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+
+.terminal{
+    background-color: black;
+    margin-top: 51px;
+    height: 500px;
+}
+
+.terminal_table{
+    margin-left: 5rem;
+    margin-right: 5rem;
+    height: 200px;
+
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+.result{
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+.myclass 
+{
+    text-transform:capitalize !important;
+}
+
+.dataTables_scrollBody{
+  margin-right: 100% !important;
+}
+.margin-100{
+  margin-left: 100px;
+    margin-top: 100px;
+}
+.div12{
+  padding-right: 33px;
+    margin-right: 100px;
+    background: #fff;
+    padding-left: 10px;
+    padding-top: 20px;
+}
+
+.max-height{
+  overflow-y: scroll;
+  max-height: 450px;
+}
+.outlier-form{
+  color: #fff;
+    align-items: center;
+    margin-top: 30px;
+    background-color: #212529c7;
+    border-radius: 12px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 30px;
+}
+
+.disabled-label {
+  color: darkgrey;
+}
+
+.disabled-input {
+  color: darkgrey;
+  background-color: grey;
+}
+
+.imbalance-form{
+  color: #fff;
+    align-items: center;
+    margin-top: 30px;
+    background-color: #212529c7;
+    border-radius: 12px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 30px;
+    width: 100%;
+}
+
+.margin-23{
+  margin-top: 22px !important;
+}
+.kurtosis{
+  color: #ff8100;
+    font-weight: 700;
+}
+
+.skewness{
+  color: #ffc107;
+    font-weight: 700;
+}
+.margion0{
+  padding-top: unset !important;
+  margin-top: unset !important;
+}
+.no-padding{
+  margin:unset !important;
+  padding: 6px 0px !important;
+}
+.margin-top-20{
+  margin-top: 20px;
+}
+
+/* DATE PICKER */
+
+.app-container {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 720px;
+  height: auto;
+  max-width: 100%;
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.buttons-container {
+  position: absolute;
+  bottom: 15px;
+  right: 0;
+  height: 40px;
+  font-family: "Roboto", sans-serif;
+}
+.cancel-button, .save-button {
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  border-radius: 2px;
+  margin-right: 15px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cancel-button {
+  background: white;
+  color: #0dad83;
+}
+.save-button {
+  background: #0dad83;
+  color: white;
+  /* Datepicker Stuff */
+}
+.datepicker {
+  position: relative;
+  width: 100%;
+  display: block;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  font-family: "Roboto", sans-serif;
+  overflow: hidden;
+  transition: background 0.15s ease;
+}
+.datepicker.am {
+  background: white;
+}
+.datepicker.pm {
+  background: #0dad83;
+}
+.datepicker-header {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+}
+.datepicker-title {
+  width: 50%;
+  float: left;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 15px;
+  text-align: left;
+  font-size: 20px;
+}
+.datepicker-subheader {
+  width: 50%;
+  float: left;
+  height: 60px;
+  line-height: 60px;
+  font-size: 14px;
+  padding: 0 15px;
+  text-align: right;
+}
+.datepicker-calendar {
+  width: 50%;
+  float: left;
+  padding: 20px 15px 15px;
+  max-width: 400px;
+  display: block;
+}
+.calendar-header {
+  color: black;
+  font-weight: bolder;
+  text-align: center;
+  font-size: 18px;
+  padding: 10px 0;
+  position: relative;
+}
+.current-month-container {
+  display: inline-block;
+  height: 30px;
+  position: relative;
+}
+.goback, .goforward {
+  height: 30px;
+  width: 30px;
+  border-radius: 30px;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: -4px;
+}
+.goback path, .goforward path {
+  transition: stroke 0.15s ease;
+}
+.goback {
+  float: left;
+  margin-left: 3.8%;
+}
+.goforward {
+  float: right;
+  margin-right: 3.8%;
+}
+.calendar-day-header {
+  width: 100%;
+  position: relative;
+}
+.day-label {
+  color: #8a8a8a;
+  padding: 5px 0;
+  width: 14.28571%;
+  display: inline-block;
+  text-align: center;
+}
+.datecontainer {
+  width: 14.28571%;
+  display: inline-block;
+  text-align: center;
+  padding: 4px 0;
+}
+.datenumber {
+  max-width: 35px;
+  max-height: 35px;
+  line-height: 35px;
+  margin: 0 auto;
+  color: #8a8a8a;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.25s cubic-bezier(0.7, -0.12, 0.2, 1.12);
+}
+.no-hover .datenumber, .no-hover .datenumber:hover, .no-hover .datenumber:before, .no-hover .datenumber:hover::before {
+  cursor: default;
+  color: #8a8a8a;
+  background: transparent;
+  opacity: 0.5;
+}
+.no-hover .datenumber.day-selected {
+  color: white;
+}
+.datenumber:hover {
+  color: white;
+}
+.datenumber:before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  border-radius: 100px;
+  z-index: -1;
+  background: transparent;
+  -webkit-transform: scale(0.75);
+  -moz-transform: scale(0.75);
+  -ms-transform: scale(0.75);
+  -o-transform: scale(0.75);
+  transform: scale(0.75);
+  transition: all 0.25s cubic-bezier(0.7, -0.12, 0.2, 1.12);
+  transition-property: background, transform, color, border;
+}
+.datenumber:hover::before {
+  background: #ffab91;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+.day-selected {
+  color: white;
+}
+.datenumber.day-selected:before {
+  background: #ff6e40;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  -webkit-animation: select-date 0.25s forwards;
+  -moz-animation: select-date 0.25s forwards;
+  animation: select-date 0.25s forwards;
+}
+@-webkit-keyframes select-date {
+  0% {
+    background: #ffab91;
+  }
+  100% {
+    background: #ff6e40;
+  }
+}
+@keyframes select-date {
+  /* timepicker styles */
+  0% {
+    background: #ffab91;
+  }
+  100% {
+    background: #ff6e40;
+  }
+}
+.timepicker-container-outer {
+  width: 50%;
+  max-width: 700px;
+  float: left;
+  display: block;
+  padding: 40px 30px 30px;
+  position: relative;
+  top: 50px;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease;
+}
+.timepicker-container-inner {
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  position: relative;
+  display: block;
+}
+.timeline-container {
+  display: block;
+  float: left;
+  position: relative;
+  width: 100%;
+  height: 36px;
+}
+.current-time {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  top: -25px;
+  left: -20px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.current-time::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  background: #ff6e40;
+  transition: all 0.15s ease;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  border-radius: 20px 20px 3px 20px;
+  z-index: -1;
+  top: 0;
+}
+.actual-time {
+  color: white;
+  line-height: 40px;
+  font-size: 12px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+.timeline {
+  display: block;
+  z-index: 1;
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  bottom: 0;
+}
+.timeline::before, .timeline::after {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 10px;
+  top: -6px;
+  position: absolute;
+  background: #0dad83;
+  left: -1px;
+  transition: background 0.15s ease;
+}
+.timeline::after {
+  left: auto;
+  right: -1px;
+}
+.hours-container {
+  display: block;
+  z-index: 0;
+  width: 100%;
+  height: 10px;
+  position: absolute;
+  top: 31px;
+  left: 1px;
+}
+.hour-mark {
+  width: 2px;
+  display: block;
+  float: left;
+  height: 4px;
+  background: #0dad83;
+  position: relative;
+  margin-left: calc((100% / 12) - 2px);
+  transition: background 0.15s ease;
+}
+.hour-mark:nth-child(3n) {
+  height: 6px;
+  top: -1px;
+}
+.display-time {
+  width: calc(60% - 30px);
+  display: block;
+  margin-top: 30px;
+  height: 36px;
+  line-height: 36px;
+  overflow: hidden;
+  float: left;
+  position: relative;
+  font-size: 20px;
+  text-align: center;
+  transition: color 0.15s ease;
+}
+.decrement-time, .increment-time {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  top: 6px;
+  font-size: 20px;
+}
+.decrement-time {
+  left: 0;
+  text-align: left;
+}
+.increment-time {
+  right: 0;
+  text-align: right;
+}
+.increment-time path, .decrement-time path {
+  transition: all 0.15s ease;
+}
+.time {
+  width: calc(100% - 48px);
+  position: relative;
+  left: 24px;
+  height: 36px;
+}
+.time:after {
+  content: '';
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: white;
+  left: 0;
+  right: 0;
+  opacity: 0.5;
+  transition: all 0.15s ease;
+}
+.time.time-active:after {
+  display: none;
+}
+.time-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  line-height: 34px;
+  bottom: 2px;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: center;
+  color: white;
+  font-size: inherit;
+  opacity: 0;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.time-input:focus, .time-input:active {
+  outline: none;
+}
+.formatted-time {
+  cursor: pointer;
+}
+.time-input:focus {
+  cursor: auto;
+}
+.time-input:focus ~ .formatted-time {
+  border-radius: 2px;
+  background: #0dad83;
+  color: white;
+  cursor: default;
+}
+.am-pm-container {
+  width: 40%;
+  padding-left: 15px;
+  float: right;
+  height: 36px;
+  line-height: 36px;
+  display: block;
+  position: relative;
+  margin-top: 30px;
+}
+.am-pm-button {
+  width: calc(50% - 5px);
+  height: 36px;
+  line-height: 36px;
+  background: #2196f3;
+  text-align: center;
+  color: white;
+  border-radius: 4px;
+  float: left;
+  cursor: pointer;
+}
+.am-pm-button:first-child {
+  background: #0dad83;
+  color: white;
+}
+.am-pm-button:last-child {
+  background: white;
+  color: #0dad83;
+  margin-left: 10px;
+}
+@-webkit-keyframes select-date-pm {
+  0% {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    background: #fff;
+  }
+}
+@keyframes select-date-pm {
+  0% {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    background: #fff;
+  }
+}
+.datepicker.am .datepicker-header {
+  color: white;
+  background: #0dad83;
+}
+.datepicker.am .current-time::after {
+  background: #0dad83;
+}
+.datepicker.am .actual-time {
+  color: white;
+}
+.datepicker.am .display-time {
+  color: #ff6e40;
+}
+.datepicker.am .time-input {
+  color: #ff693c;
+}
+.datepicker.am .time:after {
+  background: #ff693c;
+}
+.datepicker.am .increment-time path, .datepicker.am .decrement-time path {
+  stroke: #ff693c;
+}
+.datepicker.pm .datepicker-header {
+  background: white;
+  color: #ff693c;
+}
+.datepicker.pm .datepicker-subheader {
+  color: #0dad83;
+}
+.datepicker.pm .goback:before, .datepicker.pm .goback:after, .datepicker.pm .goforward:before, .datepicker.pm .goforward:after {
+  background: white;
+}
+.datepicker.pm .day-label {
+  color: white;
+}
+.datepicker.pm .datenumber {
+  color: white;
+}
+.datepicker.pm .datenumber:hover::before {
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+.datepicker.pm .datenumber.day-selected {
+  color: #ff693c;
+}
+.datepicker.pm .datenumber.day-selected:before {
+  background: white;
+  -webkit-animation: select-date-pm 0.25s forwards;
+  -moz-animation: select-date-pm 0.25s forwards;
+  animation: select-date-pm 0.25s forwards;
+}
+.datepicker.pm .current-month-container {
+  color: white;
+}
+.datepicker.pm .current-time::after {
+  background: white;
+}
+.datepicker.pm .actual-time {
+  color: #ff6e40;
+}
+.datepicker.pm .display-time {
+  color: white;
+}
+.datepicker.pm .timeline::before, .datepicker.pm .pm .timeline::after {
+  background: white;
+}
+.datepicker.pm .hour-mark {
+  background: white;
+}
+.datepicker.pm .am-pm-button:last-child {
+  color: #ff6e40;
+}
+.datepicker.pm .cancel-button {
+  background: none;
+  color: white;
+}
+.datepicker.pm .save-button {
+  background: white;
+  color: #ff693c;
+}
+.datepicker.pm .goback path, .datepicker.pm .goforward path {
+  stroke: white;
+}
+.datepicker.pm .time-input:focus ~ .formatted-time {
+  background: white;
+  color: #ff693c;
+}
+.datepicker.compact .datepicker-title, .datepicker.compact .datepicker-subheader {
+  width: 100%;
+  text-align: center;
+}
+.datepicker.compact .datepicker-title {
+  height: 50px;
+  line-height: 50px;
+}
+.datepicker.compact .datepicker-subheader {
+  height: 30px;
+  line-height: 30px;
+}
+.datepicker.compact .display-time {
+  width: 60%;
+  font-size: 20px;
+  line-height: 36px;
+}
+.datepicker.compact .app-container {
+  width: 100%;
+}
+.datepicker.compact .datepicker-calendar {
+  width: 100%;
+  margin: 0 auto;
+  float: none;
+}
+.datepicker.compact .timepicker-container-outer {
+  width: 100%;
+  margin: 0 auto;
+  float: none;
+  top: -15px;
+}
+.datepicker.compact .buttons-container {
+  position: relative;
+  float: right;
+}
+
+.margin-bottom-20{
+  margin-bottom: 20px;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.div_dtype{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#content{
+  margin-top: 50px;
+  padding: unset !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.predict-div{
+  text-align: left;
+    margin-top: 30px;
+}
+.dataTables_scroll
+{
+    overflow:auto;
+}
+.right{
+  color: #13da40;
+  font-weight: 600;
+}
+
+.wrong{
+  color: #da1341;
+    font-weight: 600;
+}
+.terminal{
+  color: #fff;
+    background: #000;
+}
+#code{
+  color: #13da40;
+  background-color: #000;
+}
+
+
+
+
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 150ms infinite linear;
+  -moz-animation: spinner 150ms infinite linear;
+  -ms-animation: spinner 150ms infinite linear;
+  -o-animation: spinner 150ms infinite linear;
+  animation: spinner 150ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.input-btn{
+  width: 200px;
+  height: 50px;
+  background: #bfc3b8;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #000;
+  font-weight: 500;
+  border-radius: 10px;
+  cursor: pointer;
+  padding-top: 10px;
+  margin-top: 20px;
+}
+.img-input{
+  width: 30px;
+  height: 30px;
+}
+.input-div{
+  justify-content: center !important;
+    align-items: center !important;
+    flex-direction: column !important;
+    display: flex !important;
+    width: unset !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.row2{
+  display: flex !important;
+  flex-direction: row !important;
+}
+.span2 {
+  color: #f0f8ff;
+}
+
+.unit-div{
+  margin-right: 10px;
+    margin-left: 10px;
+}
+
+

@@ -1,0 +1,37 @@
+dir_structure:
+  template_dir: src/templates
+  static_dir: src/static
+  upload_folder: src/temp_data_store
+  artifacts_dir: artifacts
+  eda_dir: src/eda
+  fe_dir: src/feature_engineering
+  model_dir: src/model
+  pre_dir: src/preprocessing
+  routes_dir: src/routes
+  utils_dir: src/utils
+  reports_dir: src/project_reports
+  data_store: src/data_store
+
+logs:
+  logger: logger/logs
+  generallogs_file: logs.log
+
+artifacts:
+  models: artificats/models
+
+email:
+  emailSender: emailSender
+
+scheduler:
+  scheduler_dir : scheduler
+
+secrets:
+  key: DB128%^#*(%$ZXC345
+  MAX_CONTENT_PATH: 209715200
+  host: 38.17.53.115
+  port: 17652
+  user: admin
+  password: AsiK9wJ4
+  database: auto_neuron
+  mongo: mongodb://vishal:123@auto-neuron-shard-00-00.euorq.mongodb.net:27017,auto-neuron-shard-00-01.euorq.mongodb.net:27017,auto-neuron-shard-00-02.euorq.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-v4x6uy-shard-0&authSource=admin&retryWrites=true&w=majority
+

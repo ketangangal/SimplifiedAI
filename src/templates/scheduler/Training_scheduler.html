@@ -1,0 +1,55 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="home">
+
+	<div>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				<ul class=flashes>
+					{% for message in messages %}
+						<li>{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+	</div>
+	{% if responseData|length == 0%}
+			<a href="/scheduler/add_scheduler"><button type="button" class="btn btn-success add-button" style="margin-top: 40px;">Add Scheduler</button></a>
+	{% endif %}
+	<div class="row">
+
+		{% for item in responseData %}
+
+		<div class="card" style="width: 30rem; margin: 20px 20px; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+			{% if item.mode_names == 'Regression' %}
+				<img class="card-img-top" src="/static/css/Regression.png" alt="Regression" height="150px">
+			{% elif item.mode_names == 'Classification' %}
+				<img class="card-img-top" src="/static/css/Classification.jfif" alt="Classification" height="150px">
+			{% elif item.mode_names == 'Clustering' %}
+				<img class="card-img-top" src="/static/css/Clustering.jpg" alt="Clustering" height="150px">
+			{% endif %}
+			<div class="card-body">
+			  <!-- <div class="card-title"> <strong> {{item.project_id}} </strong> </div> -->
+			  <div class="card-text"> <strong> Model Name: </strong> {{item.mode_names}} </div>
+			  <div class="card-text"> <strong> Target Column: </strong> {{item.target_col_name}} </div>
+			  <div class="card-text"> <strong> Status: </strong>
+				  {% if item.status == 1 %} 
+				  	<span class="badge bg-success"> trained </span>
+				  {% elif item.status == 0 %}
+				  	<span class="badge bg-danger"> not trained </span>
+				  {% endif %} </div>
+
+			  <div><span class="badge bg-success"><strong> Current DateTime: </strong> {{item.CurrentDateTime}}</span></div>
+			  <div class="badge bg-warning"> <strong> Scheduled DateTime: </strong> {{item.DateTime}} </div>
+			  <div class="card-text"> <strong> Email: </strong> {{item.email_send}} </div>
+			  <div style="margin-top: 17px;">
+				<a href="/scheduler/deleteScheduler"><img style="height: 35px;  margin-right: 10px;" title="Delete Project" src="https://img.icons8.com/external-wanicon-lineal-wanicon/64/000000/external-delete-user-interface-wanicon-lineal-wanicon.png"/></a>
+			  </div>
+			</div>
+		</div>
+
+		{% endfor %}
+
+	</div>
+</div>
+{% endblock %}

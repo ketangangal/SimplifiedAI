@@ -1,0 +1,35 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2 terminal_table">
+    <div class="jumbotron text-center terminal">
+        <div style="
+        overflow-y: scroll;
+        overflow-x: hidden;
+        text-align: initial;
+        height: 60vh;
+    ">
+            <p style="color:Green">Terminal</p>
+            {% for log in logs %}
+                <p> > {{log}} </p>
+            {% endfor %}
+            </div>
+
+      </div>
+    {{data | safe}}
+</div>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable();
+    jQuery('.dataTable').wrap('<div class="dataTables_scroll" />');
+    $(document).ready(function() {
+    $('p:contains("INFO")').css('color', 'aliceblue');
+    $('p:contains("ERROR")').css('color', '#e0122f');
+    })});
+
+
+</script>
+{% endblock %}
+
+# add html 404 page
+<!-- add html 404 page -->

@@ -1,0 +1,77 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if status=="success" %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Columns Deleted Successfully.
+    </div>
+    {% endif %}
+    <div class="jumbotron text-center">
+        <h1 class="myclass">Deleting Columns</h1>
+         <p>Often, a DataFrame will contain columns that are not useful to your analysis. Such
+              columns should be dropped from the DataFrame to make it easier for you to focus on
+              the remaining columns.</p>
+      </div>
+      <form action="/dp/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Columns To Delete</label>
+                    <select class="js-example-basic-multiple form-control" name="columns" id="columns" multiple="multiple">
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="button" class="btn btn-default" id="delete-btn" data-toggle="modal" data-target="#exampleModal">Delete Columns</button>
+                </div>
+            </div>     
+            
+            <!-- Delete Modal-->
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete??</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>If you delete the selected columns then it will not revert back</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" id="submit" class="btn btn-danger">Delete Columns</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+      </form>
+</div>
+<script type='text/javascript'>
+ var graphs = {{data | safe}};
+Plotly.newPlot('myDiv',  graphs);
+</script>
+<script>
+   $(document).ready(function() {
+
+    $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+    })
+    $("#delete-btn").hide()  
+    $('.js-example-basic-multiple').select2();
+    $('#columns').change(function(e) {
+        debugger;
+        if($("#columns").val() && $("#columns").val().length>0){
+            $("#delete-btn").show() 
+            }else{
+                $("#delete-btn").hide()  
+            }
+    }); 
+});
+</script>
+{% endblock %}

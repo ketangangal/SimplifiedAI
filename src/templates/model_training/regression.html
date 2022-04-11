@@ -1,0 +1,131 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="table2">
+  {% if status=="error" %}
+  <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Error!</strong> {{msg}}
+    </div>
+  {% endif %}
+    <div class="jumbotron text-center jumbtron">
+        <h1>Regression Models</h1>
+        <p>Trains your data using Regression models</p>
+      </div>
+
+      <form action="/model_training/{{action}}" method="post">
+        <div class="row">
+          <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Select Model</label>
+              <select class="form-control" id="model" name="model">
+                {% for model in models %}
+                      <option value="{{model}}">{{model}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 col-lg-4" style="margin-top: 25px;">
+            <button type="button" name="load_parameters" id="load_parameters" class="add-field btn btn-warning px-2">
+              Load Parameters
+            </button>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <div class="form-group">
+                <label for="pwd">Select Train Data Percentage</label>
+                <div class="slidecontainer">
+                    <div class="row">
+                        <input type="range" min="50" max="90" value="{{selectedCount}}" class="slider" id="range" name="range">
+                    </div>
+                    <p>Train Data Percentage <span id="demo"></span></p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <div class="alert alert-info" style="margin-top:20px">
+          <strong>Model Params</strong> Add Values of params or just leave blank(it will use default value)
+        </div>
+        <div>
+          <div id="params" style="padding-top: 40px;">
+          </div>
+         <div id="btn-smbt" style="margin-top: 50px;">
+        <div class="row">
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <button type="button" data-toggle="modal" data-target="#exampleModal" name="load_parameters" id="load_parameters" class="add-field btn btn-error px-2">
+              Train Model
+            </button>
+          </div>
+        </div>
+          </div>
+         </div>
+        </div>
+                     <!-- Modal-->
+                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure??</h5>
+                          </div>
+                          <div class="modal-body">
+                              <p>Model traning will take time.
+                              </p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+<script src="/static/js/model_params.js"></script>
+    <script>
+        $(document).ready(function() {
+          $("#params").hide()
+          $("#btn-smbt").hide()
+          $("#load_parameters").on('click',()=>{
+            $("div.load-wrapper").css('display', 'block');
+            $("#params").show()
+            var data={
+              'model':$("#model").val()
+            }
+            $.ajax({
+                type: "POST",
+                url: `${window.location.origin}/api/get_params`,
+                data: JSON.stringify(data),
+                dataType:'json',
+                contentType:'application/json',
+                cache: false})
+            .done(function(data) {
+                console.log(data)
+                if(data?.success){
+                  
+                  add_params(data.params)
+                  
+                  $("#btn-smbt").show()
+                }else{
+                    alert(data?.error)
+                    $("#btn-smbt").hide()
+                }
+                $("div.load-wrapper").css('display', 'none');
+              })
+              .fail(function(err) {
+                  alert(err)
+                  $("div.load-wrapper").css('display', 'none');
+              })
+              .always(function(info) {
+                  $("div.load-wrapper").css('display', 'none');
+              });
+    });
+    } );
+
+    </script>
+    <script>
+      var slider = document.getElementById("range");
+      var output = document.getElementById("demo");
+      output.innerHTML = slider.value;
+          slider.oninput = function() {
+            output.innerHTML = this.value;
+          }
+      </script>
+{% endblock %}

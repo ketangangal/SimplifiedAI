@@ -1,0 +1,69 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Train Test Split</h1>
+        <p>This Function helps you to Split data into train and test effectively!</p>
+      </div>
+
+    <form action="/model_training/{{action}}" method="post">
+        <div class="form-group">
+            <label for="pwd">Select Train Date Percentage</label>
+            <div class="slidecontainer">
+                <div class="row">
+                    <input type="range" min="50" max="100" value="{{selectedCount}}" class="slider" id="range" name="range">
+                </div>
+                <p>Train Data Percentage <span id="demo"></span></p>
+              </div>
+        </div>
+
+<div>
+    <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Target</label>
+                    <select class="form-control" name="columns" >
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+<!--                    <form action="/action_page.php">-->
+                        <label for="Random_State">Random State:</label>
+                        <input type="number" id="Random_State" name="Random_State" placeholder="Enter Integer Value"><br><br>
+<!--                    </form>-->
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button type="submit" class="btn btn-default">Split Dataset</button>
+            </div>
+    </form>
+    {{data | safe}}
+</div>
+<script>
+var slider = document.getElementById("range");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+</script>>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable();
+} );
+
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+{% endblock %}

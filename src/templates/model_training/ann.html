@@ -1,0 +1,424 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center jumbtron">
+        <h1>Build Custom Neural Network</h1>
+        <p>You can create your own custom neural network by adding components and train your data.
+        </p> 
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-4 col-sm-12">
+            <h2 style="font-size: 24px;color: #112027fa;">Select Components</h2>
+            <div class="input-btn" id="Input">
+                <span>Input</span>
+                <img src="{{url_for('static', filename='images/input.png')}}" class="img-input"/>
+            </div>
+                <div class="input-btn" id="Linear">
+                    <span>Linear</span>
+                    <img src="{{url_for('static', filename='images/layer.png')}}" class="img-input"/>
+            </div>
+                <div class="input-btn" id="Dropout">
+                    <span>Dropout</span>
+                <img src="{{url_for('static', filename='images/delete.png')}}" class="img-input"/> 
+            </div>
+                <div class="input-btn" id="Batch">
+                    <span>Batch Norm</span>
+                    <img src="{{url_for('static', filename='images/gaussian-function.png')}}" class="img-input"/>
+            </div>
+            <div class="input-btn" id="Output">
+                <span>Output</span>
+                <img src="{{url_for('static', filename='images/output.png')}}" class="img-input"/>
+             </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-12">
+            <h2 style="font-size: 24px;color: #112027fa;">Network Architecture</h2>
+            <div id="container_"  style=" height: 100%; overflow-y: auto;"></div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-12">
+            <button type="submit" class="btn btn-default show-loader" id="submit">Check Modal Performance</button>
+        </div>
+    </div>
+    <!-- Input layer Modal -->
+    <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Config Your Unit</h5>
+            </div>
+            <div class="row unit-div">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">No of Units</label>
+                    <input type="number" class="form-control" id="noofunits" value="1" min="1" max="10000" placeholder="No Of Units">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputState">Activation Function</label>
+                    <select id="activation" class="form-control">
+                        {% for value in activation_functions %}
+                            <option value="{{value}}">{{value}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="remove" class="btn btn-danger" data-dismiss="modal" onclick="removeUnit()">Remove</button>
+              <button id="button" class="btn btn-warning" onclick="updateUnit()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Dropout layer Modal -->
+    <div class="modal fade" id="dropModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Config Your Unit</h5>
+            </div>
+            <div class="row unit-div">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Percenatge(%) to drop</label>
+                    <input type="number" class="form-control" id="dropout_percentage" value="0.5" min="0.001" max="1.0" placeholder="drop percentage">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="removeUnit()">Remove</button>
+              <button id="button" class="btn btn-warning" onclick="updateUnit()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+          <!-- Batch layer Modal -->
+    <div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label_h1"></h5>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="removeUnit()">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+ <!-- Train Modal -->
+      <div class="modal fade" id="trainModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Config For Training</h5>
+            </div>
+            <div class="row unit-div">
+                <div class="form-group col-md-12">
+                    <label for="learningRate">Select Train Data Percentage</label>
+                    <select id="trainSplitPercent" class="form-control">
+                        <option value="0.6">0.6</option>
+                        <option value="0.66">0.65</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.75">0.75</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.85">0.85</option>
+                        <option value="0.9">0.9</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="inputState">Select Optimizer</label>
+                    <select id="optimizers" class="form-control">
+                    {% for value in optimizers %}
+                        <option value="{{value}}">{{value}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="inputState">Select Loss</label>
+                    <select id="loss" class="form-control">
+                    {% for value in loss %}
+                        <option value="{{value}}">{{value}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="inputEmail4">Learning Rate</label>
+                    <input type="number" class="form-control" id="learningRate" value="0.001" min="0.001" max="100" placeholder="Learning Rate">
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="inputEmail4">No. of Epoch</label>
+                    <input type="number" class="form-control" id="epoch" value="1" min="1" max="100000" placeholder="Epoch">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="trainButton" class="btn btn-warning" >Train</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<input type="hidden" id="hdn" value="" />
+<script src="https://cdn.jsdelivr.net/npm/leader-line-new@1.1.9/leader-line.min.js"></script>
+<script>
+      let layerUnits=[]
+      let lines=[]
+
+      const renderUnits=()=>{
+        $("#container_").empty()
+        $( "svg" ).remove()
+        for(let unit in layerUnits){
+            let drow_arrow=false
+            let insert_item=layerUnits[unit]
+            if(insert_item.type=="input"){
+            $("#container_").append(`<div id="input" class="linear input-div" onclick="editUnit('input')">
+               <div>
+                    <span>Input Layer</span>
+                    <img src="{{url_for('static', filename='images/input.png')}}" class="img-input"/>
+                </div>
+               <div class="row2">
+                    <div style="margin-right:40px">Activation: <span class='span2'>${insert_item.activation}</span></div>
+                    <div>No of units:<span class='span2'>&nbsp;${insert_item.units}</span></div>
+                </div>
+                </div>`)
+            }
+            else  if(insert_item.type=="linear"){
+                drow_arrow=true
+
+                $("#container_").append(`<div id="${insert_item.id}" class="linear input-div" style="background:#e2d5a5" onclick="editUnit('${insert_item.id}')">
+               <div>
+                    <span>Linear Layer(${insert_item.id_count})</span>
+                    <img src="{{url_for('static', filename='images/layer.png')}}" class="img-input"/>
+                </div>
+               <div class="row2">
+                    <div style="margin-right:40px">Activation: <span class='span2'>${insert_item.activation}</span></div>
+                    <div>No of units:<span class='span2'>${insert_item.units}</span></div>
+                </div>
+                </div>`)
+            }
+            else if(insert_item.type=="dropout"){
+                drow_arrow=true
+                $("#container_").append(`<div id="${insert_item.id}" class="linear input-div" style="background:#a8c9ab" onclick="editUnit('${insert_item.id}')">
+               <div>
+                    <span>Dropout Layer(${insert_item.id_count})</span>
+                    <img src="{{url_for('static', filename='images/delete.png')}}" class="img-input"/>
+                </div>
+               <div class="row2">
+                    <div style="margin-right:40px">Drop Percentage: <span class='span2'>${insert_item.percentage}</span></div>
+                </div>
+                </div>`)
+            }
+            else  if(insert_item.type=="batch_normalization"){
+                drow_arrow=true
+                $("#container_").append(`<div id="${insert_item.id}" class="linear input-div" style="background:#BFC3B8" onclick="editUnit('${insert_item.id}')">
+               <div>
+                    <span>Batch Normalization Layer(${insert_item.id_count})</span>
+                    <img src="{{url_for('static', filename='images/gaussian-function.png')}}" class="img-input"/>
+                </div>
+                </div>`)
+            }
+            else  if(insert_item.type=="output"){
+                drow_arrow=true
+                $("#container_").append(`<div id="output" class="linear input-div" style="background:#8a9ca4" onclick="editUnit('${insert_item.id}')">
+               <div>
+                    <span>Output Layer</span>
+                    <img src="{{url_for('static', filename='images/output.png')}}" class="img-input"/>
+                </div>
+                </div>`)
+            }
+            if(drow_arrow && unit>0){
+                let line=new LeaderLine(
+                        document.getElementById(layerUnits[unit-1].id),
+                        document.getElementById(layerUnits[unit].id),
+                        {dash: {animation: true}}
+                );
+                $("#container_").on('scroll', function() {
+                    line.position();
+                });
+            }
+        }
+      }
+      const removeUnit=()=>{
+        if($("#hdn").val()!="Input"){
+                layerUnits=layerUnits.filter((unit)=>unit.id!=$("#hdn").val())
+                $("#inputModal").modal('hide');
+                renderUnits()
+        }
+      }
+
+      const updateUnit=()=>{
+            if($("#hdn").val()=="input" || $("#hdn").val().includes('linear_')){
+                let unit=layerUnits.find((unit)=>unit.id==$("#hdn").val())
+                if(unit){
+                    unit['units']=parseInt($("#noofunits").val())
+                    unit['activation']=$("#activation").val()
+                }else{
+                    alert('Error:Unit not exist')
+                }
+
+                $("#inputModal").modal('hide');
+            }
+            else if($("#hdn").val().includes('dropout_')){
+                let unit=layerUnits.find((unit)=>unit.id==$("#hdn").val())
+                if(unit){
+                    unit['percentage']=parseFloat($("#dropout_percentage").val())
+                }else{
+                    alert('Error:Unit not exist')
+                }
+                $("#dropModal").modal('hide');
+            }
+            renderUnits()
+      }
+      const editUnit=(id)=>{
+      if(id){
+        $("#hdn").val(id)
+        if($("#hdn").val().includes("dropout")){
+            $("#dropModal").modal('show');
+        }
+        else if($("#hdn").val().includes("batch_normalization_") || $("#hdn").val()==("output")){
+            if($("#hdn").val()==("output")){
+                $("#label_h1").text("Remove Output Layer")
+            }else{
+                $("#label_h1").text("Remove Batch Normalization Layer")
+            }
+            $("#batchModal").modal('show');
+        }
+        else{
+                // Show/hid delete button
+                if($("#hdn").val()=="input"){
+                $("#remove").hide()
+                }else{
+                    $("#remove").show()
+                }
+            $("#inputModal").modal('show');
+        }
+      }
+      }
+    $(document).ready(()=>{
+
+      $("#submit").on('click',()=>{
+            if(layerUnits.some((x)=>x.type=="input") && layerUnits.some((x)=>x.type=="output")){
+               $("#trainModal").modal('show');
+            }
+            else if(layerUnits.some((x)=>x.type=="input") && layerUnits.some((x)=>x.type=="output")){
+               $("#trainModal").modal('show');
+            }
+            else{
+                alert('Please add Inout/output Layer')
+            }
+        })
+      $("#input_unit").on('click',()=>{
+        alert(id)
+    })
+
+      $("#Input").on('click',()=>{
+          let id_count=layerUnits.filter((x)=>x.type=='input').length
+          if(id_count==0){
+            let insert_item={type:'input',id:`input`,units:null,activation:null}
+            layerUnits.push(insert_item)
+          }
+          renderUnits()
+      })
+      $("#Linear").on('click',()=>{
+          let input=layerUnits.filter((x)=>x.type=='input').length
+          if(input==0){
+              alert('Please add input layer first')
+          }else{
+            let id_count=layerUnits.filter((x)=>x.type=='linear').length
+            id_count=id_count?id_count+1:1
+            let id=`linear_${id_count}`
+             layerUnits.push({type:'linear',id:`linear_${id}`,units:null,activation:null,id_count})
+          }
+          renderUnits()
+      })
+      $("#Dropout").on('click',()=>{
+          let input=layerUnits.filter((x)=>x.type=='input').length
+          if(input==0){
+              alert('Please add input layer first')
+          }else{
+            let id_count=layerUnits.filter((x)=>x.type=='dropout').length
+            id_count=id_count?id_count+1:1
+            layerUnits.push({type:'dropout',id:`dropout_${id_count}`,percentage:null,id_count})
+        }
+        renderUnits()
+      })
+
+      $("#Batch").on('click',()=>{
+          let input=layerUnits.filter((x)=>x.type=='input').length
+          if(input==0){
+              alert('Please add input layer first')
+          }else{
+            let id_count=layerUnits.filter((x)=>x.type=='batch_normalization').length
+            id_count=id_count?id_count+1:1
+            layerUnits.push({type:'batch_normalization',id:`batch_normalization_${id_count}`,percentage:null,id_count})
+        }
+        renderUnits()
+      })
+
+      $("#Output").on('click',()=>{
+        let id_count=layerUnits.filter((x)=>x.type=='output').length
+          if(!id_count){
+            let id_count=layerUnits.filter((x)=>x.type=='output').length
+            id_count=id_count?id_count+1:1
+            layerUnits.push({type:'output',id:`output`,percentage:null,id_count})
+          }
+        renderUnits()
+      })
+     
+      $("#trainButton").click(function (event) {
+          event.preventDefault();
+          let data = {
+              'layerUnits': layerUnits,
+              'trainSplitPercent': $("#trainSplitPercent").val(),
+              'optimizers': $("#optimizers").val(),
+              'loss': $("#loss").val(),
+              'learningRate': $("#learningRate").val(),
+              'epoch': $("#epoch").val(),
+          }
+          
+          $.ajax({
+              type: "POST",
+              url: "/model_training/ann",
+              dataType: 'json',
+              data: JSON.stringify(data),
+              contentType:'application/json',
+              cache: false
+            }).done(function(data) {
+              $("#trainModal").modal('hide');
+              console.log(data)
+              document.write(data)
+              document.close();
+            })
+            .fail(function(err) {
+              document.write(err.responseText)
+              document.close();
+            });
+      });
+    })
+</script>
+
+<style>
+    #start{
+      height:40px;
+      width:40px;
+      background-color: coral;
+    }
+    #end{
+      margin-top:200px;
+      height:40px;
+      width:40px;
+      background-color: #18ce58;
+    }
+    #end2{
+      margin-top:200px;
+      height:40px;
+      width:40px;
+      background-color: coral;
+    }
+    .linear{
+        height: 70px;
+        width: 250px;
+        background: #a5d3e2;
+        border-radius: 20px;
+        margin-bottom: 80px;
+    }
+    </style>
+{% endblock %}

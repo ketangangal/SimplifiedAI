@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/leader-line-new@1.1.9/leader-line.min.js"></script>
+    <script src="src/static/js/anim-event.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+  </head>
+  <body>
+    <h1>Hello there!</h1>
+    <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="row" style="margin-top: 20px;">
+            <button type="button" id="linear" class="btn btn-default">Add Linear Unit</button>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <button type="button" id="activation" class="btn btn-primary">Add Activation Function</button>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+            <button type="button" id="normalization" class="btn btn-success">Add Batch Normalization</button>
+        </div>
+        
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6" style=" height: 100%; overflow-y: auto;" id="container_">
+        <!-- <div class="linear"></div>
+        <div class="activation"></div>
+        <div class="batch"></div> -->
+      </div>
+    </div
+    ></div>
+    <!-- <div id="start" >start</div>
+   <div id="end">end</div>
+   <div id="end2">end</div> -->
+   <style>
+  #start{
+    height:40px;
+    width:40px;
+    background-color: coral;
+  }
+  #end{
+    margin-top:200px;
+    height:40px;
+    width:40px;
+    background-color: #18ce58;
+  }
+  #end2{
+    margin-top:200px;
+    height:40px;
+    width:40px;
+    background-color: coral;
+  }
+  .linear{
+      height: 100px;
+      width: 400px;
+      background: cadetblue;
+      border-radius: 20px;
+      margin-top: 100px;
+  }
+  .activation{
+      height: 100px;
+      width: 400px;
+      background: rgb(195, 224, 28);
+      border-radius: 20px;
+      margin-top: 100px;
+  }
+  .normalization{
+      height: 100px;
+      width: 400px;
+      background: rgb(226, 26, 36);
+      border-radius: 20px;
+      margin-top: 100px;
+  }
+  </style>
+  <script>
+// new LeaderLine(
+//   document.getElementById('start'),
+//   document.getElementById('end')
+// );
+  </script>
+  <script>
+      $(document).ready(()=>{
+        LeaderLine.positionByWindowResize =false
+        let layerUnits=[]
+        $("#linear").on('click',()=>{
+            let id_count=layerUnits.filter((x)=>x.type=='linear').length
+            id_count=id_count?id_count+1:0
+            layerUnits.push({type:'linear',id:`linear_${id_count}`})
+            $("#container_").append(`<div id="linear_${id_count}" class="linear"></div>`)
+            if(layerUnits.length>1){
+                let elems_=layerUnits.slice(layerUnits.length-2,layerUnits.length);
+                let line = new LeaderLine(
+                      document.getElementById(elems_[0].id),
+                      document.getElementById(elems_[1].id),
+                      {dash: {animation: true}}
+                );
+                $("#container_").on('scroll', function() {
+                  line.position();
+                });
+                
+            }
+        })
+        $("#activation").on('click',()=>{
+            let id_count=layerUnits.filter((x)=>x.type=='activation').length
+            id_count=id_count?id_count+1:0
+            layerUnits.push({type:'activation',id:`activation_${id_count}`})
+            $("#container_").append(`<div id="activation_${id_count}" class="activation"></div>`)
+            if(layerUnits.length>1){
+                let elems_=layerUnits.slice(layerUnits.length-2,layerUnits.length);
+                new LeaderLine(
+                      document.getElementById(elems_[0].id),
+                      document.getElementById(elems_[1].id),
+                      {dash: {animation: true}}
+                );
+            }
+        })
+        $("#normalization").on('click',()=>{
+            let id_count=layerUnits.filter((x)=>x.type=='normalization').length
+            id_count=id_count?id_count+1:0
+            layerUnits.push({type:'normalization',id:`normalization_${id_count}`})
+            $("#container_").append(`<div id="normalization_${id_count}" class="normalization"></div>`)
+            if(layerUnits.length>1){
+                let elems_=layerUnits.slice(layerUnits.length-2,layerUnits.length);
+                new LeaderLine(
+                      document.getElementById(elems_[0].id),
+                      document.getElementById(elems_[1].id),
+                      {dash: {animation: true}}
+                );
+            }
+        })
+      })
+  </script>
+  </body>
+</html>

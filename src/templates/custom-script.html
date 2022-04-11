@@ -1,0 +1,144 @@
+{% extends 'project_base.html' %}
+{% block content %}
+{% if status=="error" %}
+<div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{msg}}
+  </div>
+{% endif %}
+<div class="table2">
+    <div class="jumbotron text-center jumbtron">
+        <h1>Run Custom Script</h1>
+        <p>You can run your custom script here, to implement any functionality on dataset.</p> 
+        <div style="text-align: justify;">
+            <h2>Instrcutions:</h2>
+        <ul>
+            <li> Create a function that takes Data as df </li>
+            <li>Make changes on this <b>df</b> object inside the function</li>
+            <li>Return should be <b>df</b></li>
+            <li>Assign function output  to <b>df</b></li>
+            <li> <b>Please use single quote(') for strings </b>, check in code snippts </li>
+            <li> To avoid errors, please follow python indentation </li>
+            <li> Please check your code, don't write any code that break your flow</li>
+        </ul>
+        <h4>Follow below code snippts for references</h4>
+        <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <pre class="right">
+                
+def drop_label(df):
+    df=df.drop(['Label','Frequency'],axis=1)
+    return df
+
+df=drop_label(df)
+                    </pre>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <pre class="right">
+
+def add_new_column(df):
+    df['Tax']=df['Base']*100+df['Year']*0.7
+    return df
+
+df=add_new_column(df)
+                    </pre>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <pre class="wrong">
+                
+def add_new_column(df):
+df['Tax']=df['base']*100+df['Year']*0.7
+
+    add_new_column(dataset)
+                    </pre>
+                    <span>Return statement not exist</span>
+                    <span>Indentation and name are not correct</span>
+            </div>
+        </div>
+        </div>
+      </div>
+      <form action="/custom-script" method="post">
+        <div style="overflow:auto;">
+            <h3>Current Data:</h3>
+            <div style="overflow:auto;">
+                {{data | safe}}
+              </div>
+          </div>
+            <h3 style="margin-top: 20px; margin-bottom: 20px;">Write Your Code Here:</h3>
+            <textarea class="form-control terminal" id="code" rows="10" name="code" placeholder="def drop_label(df):
+            df=df.drop(['Label','Frequency'],axis=1)
+        
+            drop_label(df)"></textarea>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="button" id="check_btn"class="btn btn-warning show-loader">Check Script Result</button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="submit" id="submit_btn"class="btn btn-success show-loader">Save Script Result</button>
+                </div>
+            </div>
+            <div style="overflow:auto;" id="result">
+                <h3>New Data:</h3>
+                <div id="data"></div>
+            </div>
+            </div>
+      </form>
+</div>
+<script>
+        $(document).ready(function() {
+
+            $("#submit_btn").on('click',()=>{
+                  $("#loading").css('display', 'block');
+            })
+
+        $('.dataframe').DataTable({
+            "bScrollCollapse": true,
+        });
+        jQuery('.dataTable').wrap('<div class="dataTables_scroll" />');
+
+        $("#result").hide()
+        $("#submit_btn").hide()
+        });
+        $("#check_btn").on('click',()=>{
+
+        if($("#code").val().trim()){
+            var data={"code":$("#code").val()}
+            $("div.load-wrapper").css('display', 'block');
+            $("#loading").css('display', 'block');
+                $.ajax({
+                        type: "POST",
+                        url: `${window.location.origin}/api/custom-script`,
+                        dataType:'json',
+                        data:JSON.stringify(data),
+                        contentType:'application/json',
+                        cache: false
+                }).done(function(data) {
+                    $("#loading").css('display', 'none');
+                    if(data.success){
+                        $("#result").show()
+                        $("#data").empty()
+                        $("#data").append(data?.data)
+                        $('.dataframe').DataTable();
+                        $("#submit_btn").show()
+                    }else{
+                        alert(data.error)
+                        $("#submit_btn").hide()
+                    }
+                    $("div.load-wrapper").css('display', 'none');
+                })
+                .fail(function(err) {
+                    // do stuff here
+                    $("#loading").css('display', 'none');
+                    alert(err)
+                    $("div.load-wrapper").css('display', 'none');
+                    $("#submit_btn").hide()
+                })
+                .always(function(info) {
+                    // do stuff here
+                });
+        }else{
+            alert('Script is empty')
+        }
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    background-color: #f1f1f1;
+}
+
+.container {
+    width: 1000px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .card {
+    position: relative;
+    border-radius: 10px;
+}
+
+.container .card .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f00;
+    transition: 0.7s;
+    z-index: 1;
+}
+
+.container .card:nth-child(1) .icon {
+    background: #e07768;
+}
+
+.container .card:nth-child(2) .icon {
+    background: #6eadd4;
+}
+
+.container .card:nth-child(3) .icon {
+    background: #4aada9;
+}
+
+
+.container .card .icon .fa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    transition: 0.7s;
+    color: #fff;
+}
+
+i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    transition: 0.7s;
+    color: #fff;
+}
+
+.container .card .face {
+    width: 300px;
+    height: 200px;
+    transition: 0.5s;
+}
+
+.container .card .face.face1 {
+    position: relative;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transform: translateY(100px);
+}
+
+.container .card:hover .face.face1{
+    background: #ff0057;
+    transform: translateY(0px);
+}
+
+.container .card .face.face1 .content {
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.container .card:hover .face.face1 .content {
+    opacity: 1;
+}
+
+.container .card .face.face1 .content i{
+    max-width: 100px;
+}
+
+.container .card .face.face2 {
+    position: relative;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    transform: translateY(-100px);
+}
+
+.container .card:hover .face.face2{
+    transform: translateY(0);
+}
+
+.container .card .face.face2 .content p {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #414141;
+}
+
+.container .card .face.face2 .content h3 {
+    margin: 0 0 10px 0;
+    padding: 0;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    color: #414141;
+}
+
+.container a {
+    text-decoration: none;
+    color: #414141;
+}
+</style>
+ <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Cards Hover2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--<link rel="stylesheet" type="text/css" media="screen" href="style.css" />-->
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous">
+
+<div class="table2">
+    {% if status=="success" %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Columns Deleted Successfully.
+    </div>
+    {% endif %}
+    <div class="jumbotron text-center">
+         <h1 class="myclass">INSIGHTS</h1>
+         <p>Often, We require quick insights of columns before starting exploration of data for that we have data insights section for you!.</p>
+      </div>
+      <form action="/insights/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Selected Columns Insights</label>
+                  </div>
+            </div>
+            </div>
+                <div class="container">
+                    {% for col in columns %}
+                    <div class="card">
+                        <div class="face face1">
+                            <div class="content">
+                                <div class="icon">
+                                    <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="face face2">
+                            <div class="content">
+                                <h3>
+                                    <a href="https://www.linkedin.com/in/adamdipinto/" target="_blank">_adamdipinto</a>
+                                </h3>
+                                <ul type="1">
+                                    <li>Mean</li>
+                                    <li>Median</li>
+                                    <li>Mode</li>
+                                    <li>Skewness</li>
+                                    <li>Kurtosis</li>
+                                </ul>
+                                <ul  type="2" >
+                                    <li>Mean</li>
+                                    <li>Median</li>
+                                    <li>Mode</li>
+                                    <li>Skewness</li>
+                                    <li>Kurtosis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                   {% endfor %}
+
+<!--            &lt;!&ndash; Delete Modal&ndash;&gt;-->
+<!--              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--                <div class="modal-dialog" role="document">-->
+<!--                  <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                      <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete??</h5>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <p>If you delete the selected columns then it will not revert back</p>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                      <button type="submit" id="submit" class="btn btn-danger">Delete Columns</button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+                    </div>
+      </form>
+
+</div>
+<script type='text/javascript'>
+ var graphs = {{data | safe}};
+Plotly.newPlot('myDiv',  graphs);
+</script>
+<script>
+   $(document).ready(function() {
+
+    $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+    })
+    $("#delete-btn").hide()
+    $('.js-example-basic-multiple').select2();
+    $('#columns').change(function(e) {
+        debugger;
+        if($("#columns").val() && $("#columns").val().length>0){
+            $("#delete-btn").show()
+            }else{
+                $("#delete-btn").hide()
+            }
+    });
+});
+</script>
+{% endblock %}

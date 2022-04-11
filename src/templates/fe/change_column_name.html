@@ -1,0 +1,87 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if status=="success" %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Column Name Changed Successfully.
+      </div>
+    {% endif %}
+    {% if status=="error" %}
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong> Something went wrong, Column Name Changed Successfully
+      </div>
+    {% endif %}
+    <div class="jumbotron text-center jumbtron">
+        <h1>Change Column Name</h1>
+        <p>Some time perfect column name give better understanding about the column info.</p>
+      </div>
+      <form action="/fe/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Columns</label>
+                    <select class="js-example-basic-multiple form-control" name="selected_column" id="selected_column">
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">New Column Name</label>
+                    <input type="text" id="column_name" name="column_name"  class="form-control no-padding" />
+                  </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button type="button" class="btn btn-defaul" id="btn-submit"  data-target="#exampleModal">Change Column Name</button>
+            </div>
+        </div>
+                <!-- Modal-->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Are you sure??</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>You can again change the datatype
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="submit" id="submit_btn" class="btn btn-danger disabled">Change Column Name</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+      </form>
+</div>
+    <script>
+        $(document).ready(function() {
+
+          
+          $("#submit_btn").on('click',()=>{
+                  $("#loading").css('display', 'block');
+                })
+            $("#column_name").on('change',()=>{
+               if($("#column_name").val().trim()){
+                   $("#btn-submit").attr("data-toggle","modal")
+               }else{
+                $("#btn-submit").attr("data-toggle","")
+               }
+            })
+            
+            $("#btn-submit").on('click',()=>{
+                if(!$("#column_name").val().trim()){
+                    alert('Please insert column name !!!')
+                }
+            })
+    } );
+    </script>
+{% endblock %}

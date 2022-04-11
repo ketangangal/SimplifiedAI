@@ -1,0 +1,111 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if status=="success" %}
+    <input type="hidden" value="{{model_name}}" />
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Congrats!</strong> Your Model Trained Successfully. Find report below
+      </div>
+      <form style="margin-top: 50px;" action="final_train_model" method="post" id="form">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+                <div class="alert alert-warning">
+                    <strong>Model Info</strong>
+                  </div>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in reports %}
+                        <tr>
+                            <td>{{data['key']}}</td>
+                            <td>{{data['value']}}</td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+                <div class="alert alert-danger">
+                    <strong>Model Metrice</strong>
+                  </div>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in scores %}
+                        <tr>
+                            <td>{{data['key']}}</td>
+                            <td>{{data['value']}}</td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <strong>Model Params!</strong> Follwoing is the parameters list that used in model training.
+          </div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Parameter Name</th>
+                <th>Parameter Value</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for key, value in model_params.items() %}
+                <tr>
+                    <td>{{key}}</td>
+                    <td>{{value}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+          <h5>If you are ok with this result then train model on complete data</h5>
+         <div class="row">
+             <div class="col-md-4 col-lg-4 col-sm-12">
+                <button type="submit" id="submit" name="load_parameters" id="load_parameters" class="add-field btn btn-success px-2">
+                    Train and Save this Model
+                  </button>
+             </div>
+
+             <div class="col-md-4 col-lg-4 col-sm-12">
+                <a href="/scheduler/Training_scheduler" id="later" class="add-field btn btn-warning px-2" style="margin: 8px 0px; width: 329px;">
+                    Train Model Later
+                  </a>
+             </div>
+         </div>
+         <input type="hidden" value="{{model_name}}" name="model_name" />
+        </form>
+
+    {% endif %}
+    {% if status=="error" %}
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong> {{msg}}
+      </div>
+    {% endif %}
+</div>
+
+<script>
+  $(document).ready(function() {
+
+    $("#submit").on('click',()=>{
+            $("#loading").css('display', 'block');
+      })
+    })
+  </script>
+{% endblock %}

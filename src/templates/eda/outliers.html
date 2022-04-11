@@ -1,0 +1,88 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Outlier Report</h1>
+        <p>In statistics, an outlier is a data point that differs significantly from other observations. 
+            An outlier may be due to variability in the measurement or it may indicate experimental error; the latter are sometimes excluded from the data set. 
+            An outlier can cause serious problems in statistical analyses.</p> 
+    </div>
+    <form class="correlation-form" action="/eda/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Outlier Detection Method</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="method">
+                      <option value="zscore" {% if method=="zscore" %} selected="selected"{% endif %}>Z-Score</option>
+                      <option value="iqr" {% if method=="iqr" %} selected="selected"{% endif %}>IQR</option>
+                    </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="iqr_lower">
+                <label for="exampleFormControlSelect1">Select Lower Bound Limit</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="lower">
+                    <option value="25" {% if lower=="25" %} selected="selected"{% endif %}>25</option>
+                    <option value="20" {% if lower=="20" %} selected="selected"{% endif %}>20</option>
+                    <option value="15" {% if lower=="15" %} selected="selected"{% endif %}>15</option>
+                    <option value="10" {% if lower=="10" %} selected="selected"{% endif %}>10</option>
+                  </select>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="iqr_upper">
+                <label for="exampleFormControlSelect1">Select Upper Bound Limit</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="upper">
+                    <option value="75" {% if upper=="75" %} selected="selected"{% endif %}>75</option>
+                    <option value="80" {% if upper=="80" %} selected="selected"{% endif %}>80</option>
+                    <option value="85" {% if upper=="85" %} selected="selected"{% endif %}>85</option>
+                    <option value="90" {% if upper=="90" %} selected="selected"{% endif %}>90</option>
+                  </select>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button id="submit" type="submit" class="btn btn-success margin-top-10">Show Result</button>
+            </div>
+        </div>
+      </form>
+      {{data | safe}}
+      <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+      <div id='pieplot'><!-- Plotly chart will be drawn inside this DIV --></div>
+</div>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable();
+
+    $("#exampleFormControlSelect1").on('change',()=>{
+        var val=$("#exampleFormControlSelect1").val()
+
+        if(val=="iqr"){
+            $("#iqr_lower").show()
+            $("#iqr_upper").show()
+        }else{
+            $("#iqr_lower").hide()
+            $("#iqr_upper").hide()
+        }
+    })
+if($("#exampleFormControlSelect1").val()=='zscore'){
+    $("#iqr_lower").hide()
+    $("#iqr_upper").hide()
+}
+} );
+</script>
+
+<script type='text/javascript'>
+   var graphs = {{barplot | safe}};
+   Plotly.newPlot('myDiv',  graphs);
+
+   var pie_graphs = {{pieplot | safe}};
+   Plotly.newPlot('pieplot',  pie_graphs);
+
+   </script>
+
+<script>
+    $(document).ready(()=>{
+        $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+            })
+        $(".dataframe").attr("class","table table-hover")
+    })
+</script>
+{% endblock %}

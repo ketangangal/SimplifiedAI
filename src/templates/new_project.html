@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form id="project_form" class="project-form" enctype = "multipart/form-data" ac>
+
+    <div class="container col-lg-6 col-sm-6">
+      {% if msg %}
+      <div class="col-lg-12 col-sm-12 col-md-12">
+        <div class="alert alert-danger">
+          <strong>Alert!  </strong>{{msg}}.
+        </div>
+      </div>
+      {% endif %}
+
+    <h3 class="header">Add New project</h3>
+    <div class="row margin-bottom-20">
+     <div class="col-sm-12 sol-md-12 col-lg-12">
+      <label for="name"><b>Select Projcect Type:</b></label>
+      <select class="js-example-basic-multiple form-control" name="project_type" id="project_type">
+        {% for item in project_types %}
+        <option value="{{item['id']}}">{{item['name']}}</option>
+      {% endfor %}
+      </select>
+     </div>
+    </div>
+      <label for="name"><b>Name:</b></label>
+      <input type="text" placeholder="Add your project name" name="project_name" id="project_name" required>
+
+      <label for="description"><b>Description</b></label>
+      <textarea rows="4" cols="50" type="text" placeholder="Add some description about your project" name="project_desc" id="project_desc" required >
+      </textarea>
+
+      <!-- Upload File -->
+      <input class="" type="radio" name="uploadFile" id="uploadFile">
+      <label for="uploadFile" class="label1"><b>Upload Your File:</b></label>
+      <input type="file" id="file" name="file">
+      <p>allowed file *.csv, .tsv, .xml, .json</p>
+      
+
+      <!-- Other Resources -->
+      <input class="" type="radio" name="uploadResource" id="uploadResource">
+      <label for="uploadResource" class="resource-file-label"><b>Upload From Various Resource:</b></label>
+      <select class="form-control" name="resourceFile" id="resourceFile">
+        <option value=""> Select any one </option>
+        <option value="awsS3bucket"> AWS S3 Bucket </option>
+        <option value="gcpStorage"> GCP Blob Storage </option>
+        <option value="mySql"> MySql </option>
+        <option value="cassandra"> Cassandra </option>
+        <option value="mongodb"> Mongo DB </option>
+        <option value="azureStorage"> Azure Data Storage </option>
+      </select>  
+      
+      <div id="awsS3bucket" class="upload-other-resource">
+        <label for="region_name" class="col-form-label"><b> Region Name </b></label>
+        <input type="text" class="form-control awsS3bucket" id="region_name" name="region_name" placeholder="" required>
+        
+        <label for="aws_access_key_id" class="col-form-label"><b> AWS Access Key Id </b></label>
+        <input type="text" class="form-control awsS3bucket" id="aws_access_key_id" name="aws_access_key_id" placeholder="" required>
+        
+        <label for="aws_secret_access_key" class="col-form-label"><b> AWS Secret Access Key </b></label>
+        <input type="text" class="form-control awsS3bucket" id="aws_secret_access_key" name="aws_secret_access_key" placeholder="" required>
+        
+        <label for="bucket_name" class="col-form-label"><b> Bucket Name </b></label>
+        <input type="text" class="form-control awsS3bucket" id="bucket_name" name="bucket_name" placeholder="" required>
+        
+        <label for="file_name" class="col-form-label"><b> File Name </b></b></label>
+        <input type="text" class="form-control awsS3bucket" id="file_name" name="file_name" placeholder="" required>
+
+      </div>
+
+      <div id="gcpStorage" class="upload-other-resource">
+        <label for="GCP_credentials_file" class="col-form-label"><b> GCP Credentials file </b></label>
+        <input type="file" class="form-control gcpStorage" id="GCP_credentials_file" name="GCP_credentials_file">
+        <p>allowed file *.json</p>
+        
+        <label for="bucket_name" class="col-form-label"><b> Bucket Name </b></label>
+        <input type="text" class="form-control gcpStorage" id="bucket_name" name="bucket_name" placeholder="" required>
+        
+        <label for="file_name" class="col-form-label"><b> File Name </b></b></label>
+        <input type="text" class="form-control gcpStorage" id="file_name" name="file_name" placeholder="" required>
+
+      </div>
+
+      <div id="cassandra" class="upload-other-resource">
+        <label for="secure_connect_bundle" class="col-form-label"><b> Secure Connect Bundle </b></label>
+        <input type="file" accept=".zip,.rar,.7zip" class="form-control cassandra" id="secure_connect_bundle" name="secure_connect_bundle">
+        <p>allowed file *.zip</p>
+        
+        <label for="client_id" class="col-form-label"><b> Client Id </b></label>
+        <input type="text" class="form-control cassandra" id="client_id" name="client_id" placeholder="" required>
+        
+        <label for="client_secret" class="col-form-label"><b> Client Secret </b></b></label>
+        <input type="text" class="form-control cassandra" id="client_secret" name="client_secret" placeholder="" required>
+
+        <label for="keyspace" class="col-form-label"><b> Keyspace </b></b></label>
+        <input type="text" class="form-control cassandra" id="keyspace" name="keyspace" placeholder="" required>
+
+        <label for="table_name" class="col-form-label"><b> Table name </b></b></label>
+        <input type="text" class="form-control cassandra" id="table_name" name="table_name" placeholder="" required>
+
+        <div class="form-check" style="margin-top: 20px;">
+          <input class="form-check-input cassandra" type="checkbox" id="data_in_tabular"  name="data_in_tabular" >
+          <label class="form-check-label" for="data_in_tabular"> Is Data in structured format? </label>
+        </div>
+
+      </div>
+
+      <div id="mySql" class="upload-other-resource">
+        <label for="host" class="col-form-label"><b> Host </b></label>
+        <input type="text" class="form-control mySql" id="host" name="host" placeholder="" required>
+        
+        <label for="port" class="col-form-label"><b> Port </b></label>
+        <input type="text" class="form-control mySql" id="port" name="port" placeholder="" required>
+        
+        <label for="user" class="col-form-label"><b> User </b></label>
+        <input type="text" class="form-control mySql" id="user" name="user" placeholder="" required>
+        
+        <label for="password" class="col-form-label"><b> Password </b></label>
+        <input type="password" class="form-control mySql" id="password" name="password" placeholder="" required>
+        
+        <label for="database" class="col-form-label"><b> Database </b></b></label>
+        <input type="text" class="form-control mySql" id="database" name="database" placeholder="" required>
+
+        <label for="table_name" class="col-form-label"><b> Table name </b></b></label>
+        <input type="text" class="form-control mySql" id="table_name" name="table_name" placeholder="" required>
+
+      </div>
+
+      <div id="mongodb" class="upload-other-resource">
+        <label for="mongo_db_url" class="col-form-label"><b> Mongo DB URL </b></label>
+        <input type="text" class="form-control mongodb" id="mongo_db_url" name="mongo_db_url" placeholder="" required>
+
+        <label for="mongo_database" class="col-form-label"><b> Database </b></label>
+        <input type="text" class="form-control mongodb" id="mongo_database" name="mongo_database" placeholder="" required>
+
+        <label for="collection" class="col-form-label"><b> Collection </b></label>
+        <input type="text" class="form-control mongodb" id="collection" name="collection" placeholder="" required>
+
+      </div>
+
+      <div id="azureStorage" class="upload-other-resource">
+        <label for="azure_connection_string" class="col-form-label"><b> Azure Connection String </b></label>
+        <input type="text" class="form-control azureStorage" id="azure_connection_string" name="azure_connection_string" placeholder="" required>
+
+        <label for="container_name" class="col-form-label"><b> Container Name </b></label>
+        <input type="text" class="form-control azureStorage" id="container_name" name="container_name" placeholder="" required>
+
+        <label for="file_name" class="col-form-label"><b> File Name </b></label>
+        <input type="text" class="form-control azureStorage" id="file_name" name="file_name" placeholder="" required>
+
+      </div>
+
+
+      <button class="btn btn-success" type="button" id="addProject">Add Project</button>
+      <a href="/">
+        <button type="button" class="btn btn-danger back">Back</button>
+      </a>
+
+    </div>
+
+  </form>
+
+  <!-- Modal-->
+  <!-- <div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 600px;">
+      <div class="modal-content" style="color: black;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resourceModalLabel">Resource:</h5>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" id="awsForm">
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="region_name" class="col-sm-4 col-form-label">Region Name</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="region_name" name="region_name" placeholder="" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="aws_access_key_id" class="col-sm-4 col-form-label">AWS Access Key Id</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="aws_access_key_id" name="aws_access_key_id" placeholder="" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="aws_secret_access_key" class="col-sm-4 col-form-label">AWS Secret Access Key</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="aws_secret_access_key" name="aws_secret_access_key" placeholder="" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="bucket_name" class="col-sm-4 col-form-label">Bucket Name</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="bucket_name" name="bucket_name" placeholder="" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="file_name" class="col-sm-4 col-form-label">File Name</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="file_name" name="file_name" placeholder="" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="submitModal">Submit</button>
+          </div>
+        </form>
+          
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    $(document).ready(function(){     
+                //Make script DOM ready
+
+                $("#addProject").on('click',()=>{
+                  $("#loading").css('display', 'block');
+                })
+      var opval = "" 
+
+      function hideUploadOtherResource() {
+        $('.upload-other-resource').each(function(i, obj) {
+          $( '#' + $(this).attr('id') ).hide();
+        });
+      }
+
+      hideUploadOtherResource()
+
+      $('#resourceFile').change(function(e) {   //jQuery Change Function
+        opval = $(this).val();                  //Get value from select element
+        // $('#awsS3bucket').show();
+        $('.upload-other-resource').each(function(i, obj) {
+          if (opval === $(this).attr('id') ) {
+            $('#' + opval).show();
+          } else {
+            $( '#' + $(this).attr('id') ).hide();
+          }
+        });
+        // if(opval=="awsS3bucket"){               //Compare it and if true
+        //   $('#resourceModal').modal("show");    //Open Modal
+        // } else if(opval=="gcpStorage") {
+        //   $('#resourceModal').modal("show");
+        // } else if(opval=="mySql") {
+        //   $('#resourceModal').modal("show");
+        // }
+      });
+
+      $('input:radio[id=uploadFile]').prop('checked', true);
+      $("label[for='uploadResource']").addClass('disabled-label');
+      $('#resourceFile').addClass('disabled-input');
+      $('#resourceFile').prop('disabled', true);
+      var selectedRadio = $('input:radio[id=uploadFile]')[0].id
+
+      $("input:radio[name=uploadFile]").click(function(e) {
+        selectedRadio = $(this)[0].id
+
+        $('#awsS3bucket').hide();
+
+        $("label[for='uploadFile']").removeClass('disabled-label');
+        $('#file').removeClass('disabled-input');
+        $('#file').prop('disabled', false);
+
+        $('input:radio[id=uploadResource]').prop('checked', false);
+        $("label[for='uploadResource']").addClass('disabled-label');
+        $('#resourceFile').addClass('disabled-input');
+        $('#resourceFile').prop('disabled', true);
+          
+      })
+
+      $("input:radio[name=uploadResource]").click(function(e) {
+        selectedRadio = $(this)[0].id
+
+        $('input:radio[id=uploadFile]').prop('checked', false);
+        $("label[for='uploadFile']").addClass('disabled-label');
+        $('#file').addClass('disabled-input');
+        $('#file').prop('disabled', true);
+
+        $("label[for='uploadResource']").removeClass('disabled-label');
+        $('#resourceFile').removeClass('disabled-input');
+        $('#resourceFile').prop('disabled', false);
+
+      })
+
+
+      var tabularData = false
+      $('input[name="data_in_tabular"]').click(function(){
+        if($(this).prop("checked") == true){
+          tabularData = true
+          console.log("Checkbox is checked.");
+        }
+        else if($(this).prop("checked") == false){
+          tabularData = false
+          console.log("Checkbox is unchecked.");
+        }
+      });
+
+
+      $("#testConnection").click(function (event) {
+          //stop submit the form, we will post it manually.
+          event.preventDefault();
+    
+          var formData = {
+            region_name: $("#region_name").val(),
+            aws_access_key_id: $("#aws_access_key_id").val(),
+            aws_secret_access_key: $("#aws_secret_access_key").val(),
+            bucket_name: $("#bucket_name").val(),
+            file_name: $("#file_name").val(),
+            resource_type: opval,
+            source_type: selectedRadio
+          };
+
+          // var object = {};
+          // data.forEach((value, key) => object[key] = value);
+          // console.log(JSON.stringify(object))
+    
+          $.ajax({
+              type: "POST",
+              enctype: 'multipart/form-data',
+              url: "/project",
+              data: JSON.stringify(formData),
+              processData: false,
+              contentType: false,
+              cache: false,
+              timeout: 800000,
+              success: function (data) {
+                  $("#output").text(data);
+                  console.log("SUCCESS : ", data);
+                  $("#btnSubmit").prop("disabled", false);
+              },
+              error: function (e) {
+                  $("#output").text(e.responseText);
+                  console.log("ERROR : ", e);
+                  $("#btnSubmit").prop("disabled", false);
+              }
+          });
+      });
+
+      $("#addProject").click(function (event) {
+          //stop submit the form, we will post it manually.
+          event.preventDefault();
+
+          // Get form
+          var form = $('#project_form')[0];
+
+          $('.upload-other-resource').each(function(i, obj) {
+            var id = $(this).attr('id')
+            if ($(this).attr('id') !== opval) {
+              $(form).each(function(){
+                $(this).find('.' + id).remove()
+              });
+            }
+          });
+         
+          // FormData object 
+          var data = new FormData(form);
+    
+          // If you want to add an extra field for the FormData
+          data.append("resource_type", opval);
+          data.append("source_type", selectedRadio);
+          data.delete("data_in_tabular");
+
+          if (opval === "cassandra" ) {
+            data.append("data_in_tabular", tabularData);
+          }
+    
+          // disabled the submit button
+          // $("#btnSubmit").prop("disabled", true);
+
+          // console the Form Data
+          // var object = {};
+          // data.forEach((value, key) => object[key] = value);
+          // console.log(JSON.stringify(object))
+    
+          $.ajax({
+              type: "POST",
+              enctype: 'multipart/form-data',
+              url: "/project",
+              data: data,
+              processData: false,
+              contentType: false,
+              cache: false,
+              timeout: 800000,
+              success: function(response) {
+                if(response === '/') {
+                  window.location.href = response
+                }
+                else {
+                  document.write(response)
+                  document.close();
+                  window.onload = (event) => {
+                    hideUploadOtherResource()
+                  };
+                }
+              },
+              error: function (e) {
+                console.log("ERROR : ", e);
+              }
+          });
+      });
+
+    });
+  </script>
+
+{% endblock %}
+
+

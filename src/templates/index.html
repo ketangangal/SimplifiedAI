@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="home">
+  
+  <div class="jumbotron">
+    <h1>Welcome To Dashboard</h1>
+    <p>Here you can find all your projects, with there current status and option to show report, logs, export data and
+      delete project</p>
+  </div>
+
+  <div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>`
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <a href="/project"><button type="button" class="btn btn-success add-button">Add New Project</button></a>
+  <div class="row">
+
+    {% for item in projects %}
+
+    <div class="col-lg-4 col-sm-6 col-md-4">
+      <div class="card text-white bg-info mb-3" style="max-width: 25rem; min-height:18rem">
+        <div class="card-header">{{item[1]}}</div>
+        <div class="card-body">
+          <p>
+            Current Active Module:  <b class="badge badge-danger">{{item[4]}}</b>
+          </p>
+          <p>Project Type: &nbsp; <b class="badge badge-warning">{{item[8]}}</b></p>
+          <p>Target Column: &nbsp; <b class="badge badge-success">{{item[7]}}</b></p>
+          <p class="card-text project-desc" title="{{item[2]}}">{{item[2]}}</p>
+         <a href="/stream/{{item[9]}}"><button type="button" class="btn btn-warning">Continue</button></a>
+          <div class="float-right">
+            <a href="/export-resources/{{item[6]}}"><img style="height: 35px;  margin-right: 10px;" title="Export Resources" src="https://img.icons8.com/ios/50/000000/zip.png"/></a>
+            <a href="/projectReport/{{item[6]}}"><img style="height: 35px; margin-right: 10px;" title="Project Report" src="https://img.icons8.com/external-konkapp-detailed-outline-konkapp/64/000000/external-report-marketing-and-growth-konkapp-detailed-outline-konkapp.png"/></a>
+            <a href="/exportFile/{{item[6]}}/{{item[1]}}"><img style="height: 35px;  margin-right: 10px;" title="Export Data" src="https://img.icons8.com/ios/50/000000/database-export.png"/></a>
+            <a href="/deletePage/{{item[6]}}"><img style="height: 35px;  margin-right: 10px;" title="Delete Project" src="https://img.icons8.com/external-wanicon-lineal-wanicon/64/000000/external-delete-user-interface-wanicon-lineal-wanicon.png"/></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

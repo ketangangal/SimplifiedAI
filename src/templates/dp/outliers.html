@@ -1,0 +1,181 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if status=="success" %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Outliers Deleted Successfully.
+      </div>
+    {% endif %}
+        <div class="jumbotron text-center">
+            <h1>Outlier Report</h1>
+            <p>In statistics, an outlier is a data point that differs significantly from other observations. 
+                An outlier may be due to variability in the measurement or it may indicate experimental error; the latter are sometimes excluded from the data set. 
+                An outlier can cause serious problems in statistical analyses.</p> 
+        </div>
+      <form action="/dp/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Columns To Handle</label>
+                    <select class="form-control" name="columns" id="columns">
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="method">Select Outlier Detection Method</label>
+                    <select class="form-control" id="method" name="method">
+                      <option value="zscore" {% if method=="zscore" %} selected="selected"{% endif %}>Z-Score</option>
+                      <option value="iqr" {% if method=="iqr" %} selected="selected"{% endif %}>IQR</option>
+                    </select>
+                  </div>
+            </div>
+            </div>    
+            <div class="row" id="iqr_div">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="iqr_lower">
+                    <label for="lower">Select Lower Bound Limit</label>
+                    <select class="form-control" id="lower" name="lower">
+                        <option value="25" {% if lower==25 %} selected="selected"{% endif %}>25</option>
+                        <option value="20" {% if lower==20 %} selected="selected"{% endif %}>20</option>
+                        <option value="15" {% if lower==15 %} selected="selected"{% endif %}>15</option>
+                        <option value="10" {% if lower==10 %} selected="selected"{% endif %}>10</option>
+                      </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12" id="iqr_upper">
+                    <label for="upper">Select Upper Bound Limit</label>
+                    <select class="form-control" id="upper" name="upper">
+                        <option value="75" {% if upper==75 %} selected="selected"{% endif %}>75</option>
+                        <option value="80" {% if upper==80 %} selected="selected"{% endif %}>80</option>
+                        <option value="85" {% if upper==85 %} selected="selected"{% endif %}>85</option>
+                        <option value="90" {% if upper==90 %} selected="selected"{% endif %}>90</option>
+                      </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="submit" class="btn btn-default" id="submit_btn">Submit</button>
+                </div>
+               </div>
+<input type="hidden" name="outlier_method" id="outlier_method"  value="{{method}}"/>
+      </form>
+      {{data | safe}}
+      {% if outliercount and outliercount!=0%}
+    <form action="/dp/delete-outlier" method="post">
+      <div id='myDiv'></div>
+      <div class="row margin-100">
+        <div col-lg-4 col-md-4 col-sm-6 col-sm-12>
+          <div class="form-group div12 max-height">
+                <label for="exampleFormControlSelect1">Unique Outliers</label>
+                <ul>
+                    {% for outlier in unique_outliers %}
+                        <li>{{outlier}}</li>
+                    {% endfor %}
+                </ul>
+            </div>  
+        </div>
+        <div col-lg-4 col-md-4 col-sm-6 col-sm-12></div>
+        <div col-lg-4 col-md-4 col-sm-6 col-sm-12>
+            <div id='pieDiv'></div></div>
+        </div>
+     </div>
+     <div class="outlier-form">
+     <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sm-12">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Outlier To Remove</label>
+                <select class="js-example-basic-multiple form-control" name="columns" id="columns" multiple="multiple">
+                    {% for outlier in unique_outliers %}
+                    <option value="{{outlier}}">{{outlier}}</option>
+                  {% endfor %}
+                  </select>
+              </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sm-12">
+            <div class="form-group form-check" style="margin-top: 30px;">
+                <input type="checkbox" class="form-check-input" name="deleteall" id="deleteall">
+                <label class="form-check-label"  for="deleteall">Delete All Values</label>
+              </div>
+              <input type="hidden" name="selected_column" id="selected_column" value="{{selected_column}}"/>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+            <button type="button" class="btn btn-default" id="delete-btn" data-toggle="modal" data-target="#exampleModal">Remove Outliers</button>
+        </div>  
+        </div>
+    </div>
+        <!-- Delete Modal-->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete??</h5>
+                </div>
+                <div class="modal-body">
+                    <p>If you delete the selected outliers then it will remove the all Records
+                        that contains these values.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" id="submit" class="btn btn-danger">Remove Selected Outliers</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </form>
+     {% endif %}
+      {% if outliercount==0 %}
+      <div class="alert alert-success">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Great!</strong> This Column doesn't contain outliers.
+      </div>
+      {% endif %}
+
+</div>
+<script type='text/javascript'>
+//     var graphs = {{graphJSON | safe}};
+//    Plotly.newPlot('myDiv',  graphs);
+
+   var pie_graphs = {{pie_graphJSON | safe}};
+   Plotly.newPlot('pieDiv',  pie_graphs);
+</script>
+<script>
+   $(document).ready(function() {
+       if($("#outlier_method").val()=="iqr"){
+        $("#iqr_div").show()
+       }else{
+        $("#iqr_div").hide()
+       }
+    $('.dataframe').DataTable();
+    $('.js-example-basic-multiple').select2();
+
+    $("#method").on('change',()=>{
+        var val=$("#method").val()
+        if(val=="iqr"){
+            $("#iqr_div").show()
+        }else{
+            $("#iqr_div").hide()
+        }
+    })
+
+    $("#submit_btn").on('click',()=>{
+        $("#loading").css('display', 'block');
+    })
+
+    $("#submit").on('click',()=>{
+        $("#loading").css('display', 'block');
+    })
+    $("#deleteall").change((e)=>{
+        if($("#deleteall").is(':checked')){
+            $('select.js-example-basic-multiple option').attr('selected', true).parent().trigger('change')
+        }else{
+            $('select.js-example-basic-multiple option').attr('selected', false).parent().trigger('change')
+        }
+    })
+});
+</script>
+{% endblock %}

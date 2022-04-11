@@ -1,0 +1,36 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Missing Values Report</h1>
+        <p>This class returns table of dataset and this table shows
+            missing values,percentage of missing values, mean, median,
+            mode with respective to each column available in dataset.
+            and also graphical presentation of missing values.</p> 
+      </div>
+      {% if not contain_missing %}
+      <div class="alert alert-success">
+        <strong>Congrats!</strong> Data Doesn't contain any missing values
+      </div>
+      {% endif %}
+      {% if  contain_missing %}
+        {{data | safe}}
+        <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+        <div id='pieplot'><!-- Plotly chart will be drawn inside this DIV --></div>
+      {% endif %}
+</div>
+<script>
+    $(document).ready(function() {
+    $('.dataframe').DataTable();
+} );
+</script>
+
+<script type='text/javascript'>
+    var graphs = {{barplot | safe}};
+   Plotly.newPlot('myDiv',  graphs);
+
+   var pie_graphs = {{pieplot | safe}};
+   Plotly.newPlot('pieplot',  pie_graphs);
+   </script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if success %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Data Deleted Successfully.
+    </div>
+    {% endif %}
+    <div class="jumbotron text-center">
+        <h1>Handle Duplicate Records</h1>
+        <p class="myclass"><b>Why handle duplicate data?</b>Multiple records for the same person or account signal that you have inaccurate
+             or stale data, which leads to bad reporting, skewed metrics, and poor sender reputation.
+              It can even result in different sales representatives calling on the same account.</p>
+      </div>
+      <h3>Total Duplicate Records: {{duplicate_count}}</h3>
+      <form action="/dp/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Serach with selected columns</label>
+                    <select class="js-example-basic-multiple form-control" name="columns" id="columns" multiple="multiple">
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="submut" class="btn btn-default" id="delete-btn">Search Duplicate Records</button>
+                </div>
+            </div>     
+            <!-- Delete Modal-->
+      </form>
+      {% if duplicate_count==0 %}
+      <div class="alert alert-success">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Great!</strong> There is no duplicate data.
+      </div>
+      {% endif %}
+     <div style="overflow:auto;">
+        {{data | safe}}
+      </div>
+      {% if duplicate_count!=0 %}
+      <form action="/dp/remove-duplicate-data" method="post">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button type="button" class="btn btn-danger" id="delete-btn" data-toggle="modal" data-target="#exampleModal">Remove Duplicate Records</button>
+            </div>
+        </div>  
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete??</h5>
+                </div>
+                <div class="modal-body">
+                    <p>If you delete the data then it will not revert back</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button id="submit" type="submit" class="btn btn-danger">Delete Records</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" value="{{selected_column}}" name="selected_column" id="selected_column"/>
+      </form>
+      {% endif %}
+</div>
+<script>
+   $(document).ready(function() {
+    $('.dataframe').DataTable({
+            "bScrollCollapse": true,
+    });
+        jQuery('.dataTable').wrap('<div class="dataTables_scroll" />');
+    // $("#delete-btn").hide()  
+    $('.js-example-basic-multiple').select2();
+    if($("#selected_column").val()){
+        $("#columns").select2().val($("#selected_column").val().split(",")).trigger("change");
+    }
+});
+</script>
+
+<script>
+     $(document).ready(()=>{
+        $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+            })
+        $(".dataframe").attr("class","table table-hover")
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'project_base.html' %}
+{% block content %}
+<div class="table2">
+    <div class="jumbotron text-center jumbtron">
+        <h1>Show Dataset</h1>
+        <p>Get table view of your data, with custom selection options.</p> 
+      </div>
+      <form action="/eda/{{action}}" method="post">
+        <div class="form-group">
+            <label for="pwd">Select Number of Records:</label>
+            <div class="slidecontainer">
+                <div class="row">
+                    <input type="range" min="1" max="{{ 2000 if length>2000 else length}}" value="{{selectedCount}}" class="slider" id="range" name="range">
+                </div>
+                <p>Total Records:  {{length}}; Max Records To Show: <span id="demo"></span></p>
+              </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Select Columns</label>
+                    <select class="js-example-basic-multiple form-control" name="columns" multiple="multiple">
+                        {% for col in columns %}
+                        <option value="{{col}}">{{col}}</option>
+                      {% endfor %}
+                      </select>
+                  </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                    <label for="pwd">Select Order:</label>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio" id="optradio" value="top" {% if topselected %}checked{% endif %}>Show Top Rows</label>
+                      </div>
+                      <div class="radio">
+                        <label><input type="radio" name="optradio" id="optradio" value="bottom"  {% if bottomSelected %}checked{% endif %}>Show Bottom Rows</label>
+                      </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button type="submit" class="btn btn-default show-loader" id="submit">Show Result</button>
+            </div>
+            </div>
+      </form>
+      <h3 class="result">Result</h3>
+      <div style="overflow:auto;">
+        {{data | safe}}
+      </div>
+</div>
+<script>
+    var slider = document.getElementById("range");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#submit").on('click',()=>{
+                $("#loading").css('display', 'block');
+            })
+        $('.dataframe').DataTable({
+            "bScrollCollapse": true,
+        });
+        jQuery('.dataTable').wrap('<div class="dataTables_scroll" />');
+        });
+
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Graphs Visualization</h1>
+        <p>As a Data scientist, data is our biggest asset. Using data we assist in the process of decision-making which could benefit the business. But data always comes in huge quantities and looking
+            at raw data becomes hard for even a veteran Data scientist to draw meaningful inferences 
+            let alone a nontechnical person. For this, we often resort to visualizing data by using various
+            plots which can explain the data.</p> 
+    </div>
+    <form class="correlation-form" action="/eda/{{action}}" method="post">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <div class="form-group">
+                  <label class="exampleFormControlSelect1">Select Type Of Graph</label>
+                  <select class="form-control" name="graph" id=graphId>
+                    {% for col in graphs_2d %}
+                        <option value="{{col}}" {% if selected_graph_type=="value" %} selected="selected"{% endif %}>{{col}}</option>
+                    {% endfor %}
+                   </select>
+                </div>
+              </div>
+
+            <div id="x_y_columns" class="col-lg-4 col-md-4 col-sm-6 col-sm-12"> </div>
+
+            <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Select X Column</label>
+                <select class="form-control" name="xcolumn">
+                    {% for col in x_list %}
+                    <option value="{{col}}" {% if x_column=="{col}}" %} selected="selected"{% endif %}>{{col}}</option>
+                  {% endfor %}
+                  </select>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Y Column</label>
+                <select class="form-control" name="ycolumn">
+                    {% for col in y_list %}
+                    <option value="{{col}}" {% if y_column=="{{col}}" %} selected="selected"{% endif %}>{{col}}</option>
+                  {% endfor %}
+                  </select>
+              </div>
+            </div> -->
+
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button id="submit" type="submit" class="btn btn-success margin-top-10">Show Result</button>
+            </div>
+        </div>
+      </form>
+
+      <!-- Plotly chart will be drawn inside this DIV -->
+      <div id='myDiv'> </div>
+
+</div>
+
+<script type='text/javascript'>
+    var graphs = {{graphJSON | safe}};
+    Plotly.newPlot('myDiv',  graphs);
+</script>
+
+<script type='text/javascript'>
+    $(document).ready(function(){ 
+      $('#graphId').change(function(e) {   
+        // event.preventDefault();
+        graph_selected = $(this).val();  
+        console.log(graph_selected) 
+    
+        $.ajax({
+            type: "GET",
+            url: "/x_y_columns",
+            data: {graph_selected: graph_selected},
+            success: function(response) {
+              $("#x_y_columns").html(response);
+            },
+            error: function(xhr) {
+              console.log(xhr)
+              //Do Something to handle error
+            }
+        });
+      });
+    });
+</script>
+
+<script>
+    $(document).ready(()=>{
+        $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+            })
+        $(".dataframe").attr("class","table table-hover")
+    })
+</script>
+{% endblock %}

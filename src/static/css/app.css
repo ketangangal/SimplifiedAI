@@ -1,0 +1,19 @@
+.v-date-time-widget-container{
+    background: white;padding:15px
+}
+
+.v-card{
+  box-shadow: none
+}
+
+.btn-am{
+  float:left;
+}
+
+.btn-pm{
+  float:right
+}
+
+.v-date-picker-table{
+  height: auto;
+}

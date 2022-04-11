@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> SimplifiedAI </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+  <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='/css/style2.css')}}">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+  <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <style>
+         :-webkit-scrollbar-track
+        {
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+          border-radius: 10px;
+          background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar
+        {
+          width: 7px;
+          background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb
+        {
+          border-radius: 10px;
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+          background-color:#17A2B8;
+        }
+
+      #sidebar {
+        overflow: scroll;
+      }
+    </style>
+</head>
+<body>
+  <!-- <div style="color: black;"> Loading</div> -->
+<nav class="navbar navbar-expand-sm bg-info navbar-dark nav-bar-custom">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">Home</a></li>
+      
+  </ul>
+  <div>
+     {% if loggedin %}
+       <form action="/logout" method="post" class="logout-form">
+         <!-- {{session['project_name']}} -->
+          <button type="submit" class="btn btn-info logout">Logout</button>
+       </form>
+     {% endif %}
+  </div>
+</nav>
+
+<div class="wrapper">
+  <!-- Sidebar  -->
+  <nav id="sidebar">
+      <div class="sidebar-header">
+        <a href="/" class="article"><h3>Dashboard</h3></a>
+        {% if session['project_type']!=3 and  (not session['target_column'])  %}
+        <a href="/target-column"><button type="button" class="download" style="background: #fff;border-radius: 5px;; color: #17A2B8;padding-top:10px;padding-bottom: 10px;">Set Target Column</button></a>
+        {% endif %}
+      </div>
+
+      <ul class="list-unstyled components">
+          <li><a href="/module">Main Page</a></li>
+          <li class="active">
+              <a href="#datainsights" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Data Insights</a>
+              <ul class="collapse list-unstyled" id="datainsights">
+                  <li><a href="/insights/data_insights">Generate Insights</a></li>
+              </ul>
+          </li>
+          <li class="active">
+              <a href="#edaSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">EDA</a>
+              <ul class="collapse list-unstyled" id="edaSubmenu">
+                  <li><a href="/eda/help">Help</a></li>
+                  <li><a href="/eda/data-summary">Data Summary</a></li>
+                  <li><a href="/eda/show">Show Dataset</a></li>
+                  <li><a href="/eda/missing">Missing Values Report</a></li>
+                  <li><a href="/eda/correlation">Correlation Report</a></li>
+                  <li><a href="/eda/outlier">Outlier Report</a></li>
+                  <li><a href="/eda/plots">Plots</a></li>
+<!--                  <li><a href="/eda/profiler">Profiler Report</a></li>-->
+              </ul>
+          </li>
+          <li class="active">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Data Preprocessing</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li><a href="/dp/help">Help</a></li>
+                <li><a href="/dp/delete-columns">Delete Columns</a></li>
+                <li><a href="/dp/outlier">Handle Outliers</a></li>
+                <li><a href="/dp/duplicate-data">Handle Duplicate Data</a></li>
+                <li><a href="/dp/missing-values">Handle Missing Data</a></li>
+                <li><a href="/dp/imbalance-data">Handle Imbalanced Data</a></li>
+            </ul>
+        </li>
+        <li class="active">
+            <a href="#FeatureEngineeringSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Feature Engineering</a>
+            <ul class="collapse list-unstyled" id="FeatureEngineeringSubmenu">
+                  <li><a href="/fe/help">Help</a></li>
+                  <li><a href="/fe/handle-datatype">Handle Data Type</a></li>
+                  <li><a href="/fe/encoding">Encoding</a></li>
+                  <li><a href="/fe/change-column-name">Change Column Name</a></li>
+                  <li><a href="/fe/scaling">Scaling</a></li>
+                  <li><a href="/fe/feature_selection">Feature Selection</a></li>
+                  <li><a href="/fe/dimension_reduction">Dimension Reduction</a></li>
+            </ul>
+        </li>
+
+          <li class="active">
+            <a href="#ModelTrainingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Model Training</a>
+            <ul class="collapse list-unstyled" id="ModelTrainingSubmenu">
+                  <li><a href="/model_training/help">Help</a></li>
+                  <li><a href="/model_training/auto_training">Find Best Model</a></li>
+                  <li><a href="/model_training/custom_training">Custom Model Training</a></li>
+                  <li><a href="/prediction">Make Prediction</a></li>
+            </ul>
+        </li>
+
+          <li class="active">
+            <a href="#SchedulerSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Scheduler</a>
+            <ul class="collapse list-unstyled" id="SchedulerSubmenu">
+                  <li><a href="/scheduler/help">Help</a></li>
+                  <li><a href="/scheduler/Training_scheduler">Training Scheduler</a></li>
+            </ul>
+        </li>
+
+          <li class="active">
+            <a href="#SystemLogsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">System Logs</a>
+            <ul class="collapse list-unstyled" id="SystemLogsSubmenu">
+                  <li><a href="/systemlogs/terminal">Terminal</a></li>
+            </ul>
+        </li>
+
+          <li class="active">
+            <a href="#HistorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">History</a>
+            <ul class="collapse list-unstyled" id="HistorySubmenu">
+                  <li><a href="/history/actions">Actions</a></li>
+            </ul>
+        </li>
+
+      </ul>
+
+      <ul class="list-unstyled CTAs">
+          <li>
+              <a href="/custom-script" class="download">Custom Script</a>
+          </li>
+          <li>
+              <a href="/" class="article">Back to home</a>
+          </li>
+      </ul>
+  </nav>
+
+  <div id="content">
+    {% block content %}{% endblock %}
+</div>
+
+
+</div>
+
+
+<div class="loading" id="loading" style=" z-index: 56000;">
+</div>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+      $("#sidebar").mCustomScrollbar({
+          theme: "minimal"
+      });
+  });
+</script>
+ <script>
+      $("#loading").css('display', 'none');
+    </script>
+<!-- loader section style start-->
+<style>
+    
+  .loader {
+  z-index: ;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: -1%;
+  left: 50%;
+  }
+  
+  .spinner {
+      width: 100px;
+      height: 100px;
+      display: inline-block;
+      border-width: 5px;
+      border-color: rgba(255, 255, 255, 0.05);
+  border-top-color: #fff;
+  animation: spin 1s infinite linear;
+  border-radius: 100%;
+  border-style: solid;
+}
+
+@keyframes spin {
+  100% {
+      transform: rotate(360deg);
+  }
+      }
+  .show {
+      opacity: 1;
+  }
+  
+  .hide {
+      opacity: 0;
+  }
+  </style>
+
+<!-- loader section style ends-->
+
+</body>
+</html>

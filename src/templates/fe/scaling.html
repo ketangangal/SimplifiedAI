@@ -1,0 +1,114 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    {% if status=="success" %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> Data Scalled Successfully.
+      </div>
+    {% endif %}
+    {% if status=="error" %}
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error!</strong>{{msg}}
+      </div>
+    {% endif %}
+    <div class="jumbotron text-center">
+        <h1>Feature Scaling</h1>
+        <p>Feature scaling is essential for machine learning algorithms that calculate distances between data. 
+            Therefore, the range of all features should be normalized so that each feature contributes approximately
+             proportionately to the final distance</p>
+             <div class="alert alert-success">
+                <strong>Note!</strong> You can perform Scaling Reduction only Once.
+            </div>
+    </div>
+<form action="/fe/scaling" method="post">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Type of Scaler</label>
+                <select class="form-control" name="scaling_method" id="scaling_method">
+                    {% for col in scaler_types %}
+                    <option value="{{col}}">{{col}}</option>
+                  {% endfor %}
+                  </select>
+            </div>
+        </div>
+        <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Columns</label>
+                <select class="js-example-basic-multiple form-control" name="columns" id="columns" multiple="multiple">
+                    {% for col in columns %}
+                    <option value="{{col}}">{{col}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div> -->
+        <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+            <div class="form-group">
+                <div class="checkbox" id="">
+                    <input type="checkbox" value="" id="selectall"/><label>&nbsp; Select All</label>
+                  </div>
+                </div>
+        </div> -->
+    </div>
+        <div class="row">
+            {% if allowed_operation !="not" %}
+            <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                <button type="button" class="btn btn-default" id="btn-submit"  data-target="#exampleModal" data-toggle="modal">Perform Scaler</button>
+            </div>
+            {% endif %}
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure??</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Please make sure to make selected scaling,because you can't revert this operation
+                    </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" id="submit" class="btn btn-danger">Save Result</button>
+                </div>
+              </div>
+            </div>
+          </div>
+</form>
+</div>
+<script>
+    $(document).ready(function() {
+
+        $("#submit").on('click',()=>{
+                  $("#loading").css('display', 'block');
+            })
+        $("#selectall").on('change',()=>{
+            if($("#selectall").prop('checked')){
+                $('select.js-example-basic-multiple option').attr('selected', true).parent().trigger('change')
+            }else{
+                $('select.js-example-basic-multiple option').attr('selected', false).parent().trigger('change')
+            }
+        })
+
+        // $('.js-example-basic-multiple').select2();
+
+        $("#columns").on('change',()=>{
+               if($("#columns").val()){
+                   $("#btn-submit").attr("data-toggle","modal")
+               }else{
+                $("#btn-submit").attr("data-toggle","")
+               }
+        })
+
+        // $("#btn-submit").on('click',()=>{
+        //         if(!$("#column_name").val().trim()){
+        //             alert('Please insert column name !!!')
+        //         }
+        //     })
+    });
+
+</script>
+{% endblock %}

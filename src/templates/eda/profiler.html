@@ -1,0 +1,37 @@
+{% extends 'project_base.html' %}
+{% block content %}
+
+<div class="table2">
+    <div class="jumbotron text-center">
+        <h1>Data Profiling</h1>
+        <p> Data profiling is a technique used to analyze and gain a better understanding
+            of raw data. It is the first step in determining what insights data can yield
+            when you run it through machine learning algorithms in order to make predictions</p> 
+        </div>
+        <div class="alert alert-success">
+            <strong>Note!</strong> Profile Report Genefrate will take time, so please keep patience.
+        </div>
+        <form action="/eda/{{action}}" method="post">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+                    <button type="submit" class="btn btn-warning show-loader">Generate Profile Report</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    
+    <!-- loader section script start -->
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      $(".show-loader").click(function () {
+        $("div.load-wrapper").css('display', 'block');
+    });
+    </script>
+<!-- loader section script end -->
+
+
+{% endblock %}

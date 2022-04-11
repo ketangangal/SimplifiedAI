@@ -1,0 +1,7 @@
+#!/bin/bash
+sudo apt install virtualenv
+sudo apt install python3-pip
+cd /home/ec2-user/Projectathon
+virtualenv environment
+source environment/bin/activate
+sudo pip install -r /home/ec2-user/Projectathon/requirements.txt
